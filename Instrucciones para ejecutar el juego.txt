@@ -1,0 +1,12 @@
+
+Instalación
+
+Para instalar ejecutar desde la consola:
+
+$ npm install
+
+Ejecución
+
+Desde dentro de la carpeta del enunciado ejecutar:
+
+$ node ./node_modules/gulp/bin/gulp run
