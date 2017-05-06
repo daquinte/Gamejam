@@ -17,28 +17,28 @@ var MenuScene = {
         logo.anchor.setTo(0.5, 0.5);//Anclamos el logo
 
         //Añadimos el botón
-        var buttonStart = this.game.add.button(this.game.world.centerX  -50, 
-                                               this.game.world.centerY, 
+        var buttonJugar = this.game.add.button(this.game.world.centerX + 130, 
+                                               this.game.world.centerY - 60, 
                                                'button', 
                                                this.actionOnClick, 
                                                this, 2, 0, 0);
-        buttonStart.anchor.set(0.5);//Anclamos el botón
+        buttonJugar.anchor.set(0.5);//Anclamos el botón
 
-        buttonStart.scale.x*= 1.5;
-        buttonStart.scale.y*= 1.5;
+        //buttonJugar.scale.x*= 1.5;
+        //buttonJugar.scale.y*= 1.5;
 
-        var textStart = this.game.add.text(0, 0, "Start");//Creamos el texto
-        textStart.font = 'Poppins';//Elegimos la fuente
-        textStart.anchor.set(0.5);//Anclamos el texto
-        //textStart.fill = '#43d637';//PODEMOS PODER COLOR ASÍ
+        var textJugar = this.game.add.text(0, 0, "Jugar");//Creamos el texto
+        textJugar.font = 'Poppins';//Elegimos la fuente
+        textJugar.anchor.set(0.5);//Anclamos el texto
+        //textJugar.fill = '#43d637';//PODEMOS PONER COLOR ASÍ
 
-        textStart.fill = '#FFA500';
-        textStart.stroke = '#FF0000';
-        textStart.strokeThickness = 3;
+        textJugar.fill = '#FFA500';
+        textJugar.stroke = '#FF0000';
+        textJugar.strokeThickness = 3;
 
-        buttonStart.addChild(textStart);//Metemos el texto en el botón
+        buttonJugar.addChild(textJugar);//Metemos el texto en el botón
 
-        this.buttonControl = this.game.add.button(this.game.world.centerX  -50, 
+        this.buttonControl = this.game.add.button(this.game.world.centerX  + 130, 
                                                this.game.world.centerY + 100, 
                                                'button', 
                                                this.controlOnClick, 
@@ -52,9 +52,9 @@ var MenuScene = {
 
         textControl.fill = '#FFA500';
 
-        this.textTutorial = this.game.add.text(30,400,"Controles:"+'\n'+"-Puedes moverte con las flechas de direccion" + '\n' +
-            "-Puedes saltar con SpaceBar"+ '\n' + "-Puedes agarrarte a las paredes con la tecla G" + '\n' + "-Puedes saltar mientras estás agarrado con SpaceBar"
-             + '\n' + "-Puedes soltarte de las paredes con la tecla H");
+        this.textTutorial = this.game.add.text(30,420,"Controles teclado:"+'\n'+"-Puedes moverte con las flechas de dirección" + '\n' +
+            "-Puedes interactuar con la tecla E"+ '\n' + "Controles mando:" + '\n' + "-Puedes moverte con los cursores de dirección"
+             + '\n' + "-Puedes interactuar con el botón A");
         this.textTutorial.fill = '#FFA500';
 
         this.textTutorial.fontSize = 20;

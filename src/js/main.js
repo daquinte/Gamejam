@@ -14,9 +14,9 @@ var BootScene = {
     //Carga 
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');//Barra de carga
     this.game.load.image('backPreloader_bar', 'images/fondoBarraCarga.png');//Barra de carga
-    this.game.load.spritesheet('button', 'images/boton_azul.png', 190,46,3);//Imagen del botón
-    this.game.load.spritesheet('buttonExit', 'images/boton_naranja.png', 190,45.5,3);//Imagen del botón
-    this.game.load.image('logo', 'images/pantallaMenu.png');//Imagen del logo
+    this.game.load.spritesheet('button', 'images/boton.png', 300,83,3);//Imagen del botón
+    //this.game.load.spritesheet('buttonExit', 'images/boton_naranja.png', 190,45.5,3);//Imagen del botón
+    this.game.load.image('logo', 'images/fondoMenu.png');//Imagen del logo
     //this.game.load.audio('musicaMenu','sound/musicaMenu.wav');
     //this.game.load.audio('buttonSound','sound/buttonSound.wav');
 
