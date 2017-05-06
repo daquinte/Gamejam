@@ -3,6 +3,7 @@
 //var Pausa = require('./Pausa.js');
 var Mapa = require('./Mapa.js');
 
+
 //Scena de juego.
 var PlayScene = 
 {
@@ -13,6 +14,7 @@ var PlayScene =
      
         this.configure();
 
+         
         //Creamos la pausa
        // this.pausa = new Pausa(this.game,this.mapa.player.getAnimations(),this.mapa.enemies , this.mapa.musica);
 
@@ -40,7 +42,8 @@ var PlayScene =
             {
                 this.game.physics.arcade.collide(enemy, this.mapa.getTriggerLayer());
             }.bind(this));
-*/
+*/          
+        
 
             this.mapa.update_();
 

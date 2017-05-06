@@ -217,6 +217,7 @@ function Enemy(game,posX,posY,player){
     //this.animations.add('dead',[3],1,false);
     //this.animations.play('walk');
     this.player = player;
+
 };
 
 Enemy.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
@@ -257,7 +258,13 @@ Enemy.prototype.isTouchingUp = function()
 };
 
 /////////////////ENEMY////////////////////
+/////////////////POLY GUARDIA////////////////////
+//var poly;
 
+//var graphics;
+       
+
+/////////////////POLY GUARDIA////////////////////
 /////////////////GUARDIA////////////////////
 function Guardia(game,posX,posY,player){
 
@@ -266,6 +273,18 @@ function Guardia(game,posX,posY,player){
     //this.animations.add('dead',[3],1,false);
     //this.animations.play('walk');
     this.player = player;
+
+    //this.poly = new Phaser.Polygon([ new Phaser.Point (posX,posY), new Phaser.Point (posX*Math.cos(60),posX*Math.sin(60)), new Phaser.Point (posX*Math.cos(-60),posX*Math.sin(-60))]);
+    this.poly = new Phaser.Polygon([ new Phaser.Point (posX,posY), new Phaser.Point (posX*Math.cos(60),posY*Math.sin(60)), new Phaser.Point (posX*Math.cos(-60),posY*Math.sin(-60))]);
+
+
+    this.graphics = this.game.add.graphics(posX, posY);
+
+    this.graphics.beginFill(0xFF33ff);
+    this.graphics.drawPolygon(this.poly.points);
+    this.graphics.endFill();
+
+    this.addChild(this.graphics);
 };
 
 Guardia.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
@@ -273,7 +292,7 @@ Guardia.constructor = Guardia;
 
 Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar movidas? 
 {
-    var rnd = Math.floor((Math.random() * 4) + 1); 
+   /* var rnd = Math.floor((Math.random() * 4) + 1); 
 
     switch (rnd){
 
@@ -293,6 +312,21 @@ Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar 
           this._direction = Direction.DOWN;
         break;
     }
+    */
+            this.graphics.clear();
+
+            if (this.poly.contains(this.game.input.x , this.game.input.y)){
+                  this.graphics.beginFill(0xFF3300);
+                console.log ("Hola estás dentro de mi, me estás oprimiendo");
+            }
+
+            else{
+                this.graphics.beginFill(0xFF33ff);
+             console.log ("Cuack");
+         }
+
+             this.graphics.drawPolygon(this.poly.points);
+             this.graphics.endFill();
 
   var moveDirection = new Phaser.Point(0, 0);
 
