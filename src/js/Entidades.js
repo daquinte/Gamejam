@@ -66,9 +66,6 @@ function Player(game,posX,posY)
     Entity.call(this,game,400,Direction.NONE,posX,posY,'player');
     this._playerState= PlayerState.STOP; //estado del player
 
-    this.actPosX = posX;
-    this.actPosY = posY;
-
 /*
 	//nombre de la animación, frames, framerate, isloop
     this.animations.add('run',[3,4,5],10,true);
@@ -100,7 +97,7 @@ Player.prototype.update_ = function()
 {
 	var moveDirection = new Phaser.Point(0, 0);
     var movement = this.GetMovement();
-    this.SetPosAct(movement.x, movement.y);    //Actualizamos la posicion del jugador para que la sepa el guardia
+  
 
     //transitions
     switch(this._playerState)
@@ -158,7 +155,7 @@ Player.prototype.update_ = function()
             }
 
            
-
+            //this.SetPosAct(moveDirection.x, moveDirection.y);    //Actualizamos la posicion del jugador para que la sepa el guardia
             this.movement(moveDirection.x, moveDirection.y);
 
            
@@ -199,14 +196,13 @@ Player.prototype.GetMovement= function()
 
 };
 
-Player.prototype.GetActPos = function (){
-    var posAct = new Phaser.Point(this.actPosX, this.actPosY);
-    return posAct;
+Player.prototype.getPosX = function (){
+    return this.body.x;
 };
 
-Player.prototype.SetPosAct = function (newPosX,newPosY){
-      this.actPosX = newPosX;
-      this.actPosY = newPosY;
+
+Player.prototype.getPosY = function (){
+   return this.body.y;
 };
 
 ///////////////PLAYER///////////////////////
@@ -228,17 +224,17 @@ Enemy.constructor = Enemy;
 
 Enemy.prototype.updateEnemy_ = function()
 {
-    var moveDirection = this.player.GetActPos();
+    var moveDirection = new Phaser.Point(this.player.getPosX(), this.player.getPosY());
     //new Phaser.Point(this.player.GetPosAct().x,this.player.GetPosAct().y); 
     //this.player.GetActPos();
 
-    console.log(moveDirection.x);
+    console.log(moveDirection);
 
     //this.changeDirectionEnemy();
-    this.movement(moveDirection);
-
-    this.game.physics.arcade.moveToXY(this,moveDirection.x,moveDirection.y,60,0);
-
+    //this.movement(moveDirection);
+    if (this.body.x != moveDirection.x && this.body.y != moveDirection.y ) {
+        this.game.physics.arcade.moveToXY(this,moveDirection.x,moveDirection.y,60,0);
+    };
 };
 
 Enemy.prototype.changeDirectionEnemy = function(){//Cambia la dirección al chocar una pared
