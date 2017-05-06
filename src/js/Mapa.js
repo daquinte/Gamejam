@@ -23,6 +23,7 @@ function BuildMap(game)
     this.createTilemap();
         
     this.createPlayer();
+
       //  var enemy = new Personajes.Enemy(this.game,210,750);
 
 
@@ -77,6 +78,8 @@ BuildMap.prototype.createTilemap = function(){
 
 BuildMap.prototype.createPlayer = function(){
     this.player = new Personajes.Player(this.game,300,300);
+            this.player.scale.setTo(2.1,2.1);
+
     this.game.world.addChild(this.player);
 
 };

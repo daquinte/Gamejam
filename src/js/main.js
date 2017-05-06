@@ -52,9 +52,9 @@ var PreloaderScene = {
       this.game.load.tilemap('tilemap1', 'maps/mapa.json',null,Phaser.Tilemap.TILED_JSON);//Cargar el tilemap(hecho)
       
       //PERSONAJES
-      this.game.load.image('player', 'images/gemBlue.png');//cargar sprites del tilemap
+      //this.game.load.image('player', 'images/gemBlue.png');//cargar sprites del tilemap
 
-      //this.game.load.spritesheet('player','images/foxSpriteSheet.png',56,80);
+      this.game.load.spritesheet('player','images/Animacion.png',19,26);
       //this.game.load.spritesheet('enemy','images/enemy.png',77,53);
 
       //TILES

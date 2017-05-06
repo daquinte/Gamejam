@@ -103,7 +103,6 @@ var PlayScene =
 
         timer.add(1000, this.aumentaTiempo, this);
         timer.start();
-        
     },
     
     //IS called one per frame.
