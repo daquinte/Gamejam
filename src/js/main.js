@@ -62,7 +62,7 @@ var PreloaderScene = {
 
 
       //OBJETOS
-      //this.game.load.image('gemaAzul','images/gemBlue.png');
+      this.game.load.image('gemaAzul','images/gemBlue.png');
       //this.game.load.image('gemaRoja','images/gemRed.png');
       //this.game.load.image('gemaAmarilla','images/gemYellow.png');
       //this.game.load.image('gemaVerde','images/gemGreen.png');

@@ -139,13 +139,27 @@ function Player(game,posX,posY)
     //Velocidad del jugador
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
+    this.posX = posX;
+    this.posY = posY;
 
     this.game.camera.follow(this,Phaser.Camera.FOLLOW_LOCKON);//La cámara te sigue
 
 };
 
+
+
 Player.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
 Player.constructor = Player;
+
+Player.prototype.getX_ = function(){
+    return this.posX;
+
+}
+
+Player.prototype.getY_ = function(){
+    return this.posY;
+
+}
 
 
 Player.prototype.update_ = function()

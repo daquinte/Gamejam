@@ -3,15 +3,38 @@
 //var Pausa = require('./Pausa.js');
 var Mapa = require('./Mapa.js');
 
+var nextConver = 0
+
 //Scena de juego.
 var PlayScene = 
 {
     //Método constructor...
     create: function () 
     {
+        this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.UP,Phaser.Keyboard.DOWN]);
         this.mapa = new Mapa(this.game);
      
         this.configure();
+        this.tiempo = 20;
+        this.dia = 0;
+        this.timePaused = false;
+
+        this.texto = this.game.add.text(this.game.camera.x + 400,this.game.camera.y +100,"Hora: " + this.tiempo);
+
+        console.log(this.mapa.player.posX);
+        this.posIniX = this.mapa.player.posX;
+        this.posIniY = this.mapa.player.posY;
+
+         this.texto.font = 'Poppins';//Elegimos la fuente
+        this.texto.anchor.set(0.5);//Anclamos el texto
+
+        this.texto.fill = '#FFA500';
+        this.texto.stroke = '#FF0000';
+        this.texto.strokeThickness = 3;
+
+        this.texto.fixedToCamera = true;
+
+        this.aumentaHora();
 
         //Creamos la pausa
        // this.pausa = new Pausa(this.game,this.mapa.player.getAnimations(),this.mapa.enemies , this.mapa.musica);
@@ -24,12 +47,33 @@ var PlayScene =
         */
         this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
     },
+
+    aumentaHora: function ()
+    {
+        this.tiempo++;
+        this.texto.text = "Hora: " + this.tiempo;
+
+        if(this.tiempo == 22)
+        {
+            this.mapa.player.movement(0,0);
+            this.timePaused = true;
+
+        }
+        
+        var timer = this.game.time.create(false);
+
+        timer.add(10000, this.aumentaHora, this);
+        timer.start();
+        
+    },
     
     //IS called one per frame.
     update: function () 
     {
-        //if (!this.pausa.isPaused())
-        //{
+        if (!this.timePaused)
+        {
+            console.log("hola");
+
             //UPDATE DE TODAS LAS ENTIDADES
             //COLISION JUGADOR - TILES
             this.game.physics.arcade.collide(this.mapa.player, this.mapa.getColisionLayer());
@@ -52,11 +96,37 @@ var PlayScene =
             //COLISION JUGADOR - GEMAS
 
             //this.checkFinalLevel();
-            //this.checkCollisionWithGem();
+            this.checkCollisionWithKey();
+            this.checkCollisionWithNPCs();
+
 
             //Detectar input de pausa
             //this.pausa.inputPause();
-        //}
+        }
+        else
+        {
+             //Añadimos el botón
+            this.buttonCelda = this.game.add.button(this.game.world.centerX  -50, 
+                                               this.game.world.centerY, 
+                                               'button', 
+                                               this.CeldaOnClick, 
+                                               this, 2, 0, 0);
+            this.buttonCelda.anchor.set(0.5);//Anclamos el botón
+
+            this.buttonCelda.scale.x*= 1.5;
+            this.buttonCelda.scale.y*= 1.5;
+
+            var textCelda = this.game.add.text(0, 0, "Volver a la celda");//Creamos el texto
+            textCelda.font = 'Poppins';//Elegimos la fuente
+            textCelda.anchor.set(0.5);//Anclamos el texto
+            //textCelda.fill = '#43d637';//PODEMOS PODER COLOR ASÍ
+
+            textCelda.fill = '#FFA500';
+            textCelda.stroke = '#FF0000';
+            textCelda.strokeThickness = 3;
+
+            this.buttonCelda.addChild(textCelda);//Metemos el texto en el botón
+        }
         /*
         else if (this.pausa.goToMenu())
         {
@@ -67,6 +137,23 @@ var PlayScene =
         }
         */
     },
+
+     //Al pulsar el botón
+    CeldaOnClick: function(){
+        this.mapa.player.x = this.posIniX;
+        this.mapa.player.y = this.posIniY;
+        this.mapa.player.body.position = new Phaser.Point(this.posIniX, this.posIniY);
+        //this.mapa.player.body.position.y = ;
+        this.tiempo = 9;
+        this.texto.text = "Hora: " + this.tiempo;
+        this.buttonCelda.visible = false;
+
+
+        this.dia++;
+        this.timePaused = false;
+        //mover al jugador y reiniciar hora
+
+    } ,
 
    /*//Comprueba si el jugador ha muerto por colision con la capa muerte o con el enemigo
     checkPlayerDeath: function()
@@ -102,21 +189,43 @@ var PlayScene =
     }
     return false;
   },
+  */
 
-    checkCollisionWithGem: function()
+    checkCollisionWithKey: function()
     {
-        this.mapa.gems.forEach(function(gem) 
+        this.mapa.llaves.forEach(function(llave) 
         {
-            var bool = this.game.physics.arcade.collide(gem, this.mapa.player)
-            if (bool)
+            if (this.game.physics.arcade.collide(llave, this.mapa.player))
             {
-                this.gemSound.play();
-                this.mapa.currentGems--;
-                gem.destroy();
+                llave.onCollision();
+                //this.gemSound.play();
+                //this.mapa.currentGems--;
+                llave.destroy();
             }
         }.bind(this));
             
     },
+
+    checkCollisionWithNPCs: function()
+    {
+        this.mapa.NPCs.forEach(function(NPC) 
+        {
+            if (this.game.physics.arcade.collide(NPC, this.mapa.player) 
+                && this.game.input.keyboard.isDown(Phaser.Keyboard.E) &&
+                this.game.time.now > nextConver)
+            {
+                NPC.onCollision();
+                //this.gemSound.play();
+                //this.mapa.currentGems--;
+                //NPC.destroy();
+                nextConver = this.game.time.now + 3000;
+
+            }
+        }.bind(this));
+            
+    },
+
+    /*
 
     checkFinalLevel: function()
     {
