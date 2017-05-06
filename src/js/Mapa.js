@@ -36,6 +36,8 @@ function BuildMap(game)
         this.game.world.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);//Límite del mundo
         
         this.player = new Personajes.Player(this.game,300,300);
+        this.player.scale.setTo(2.1,2.1);
+
         this.game.world.addChild(this.player);
 
       //  var enemy = new Personajes.Enemy(this.game,210,750);

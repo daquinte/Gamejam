@@ -22,7 +22,8 @@ var PlayScene =
         this.gemSound = this.game.add.audio('gemSound');
         this.rocketSound = this.game.add.audio('rocketSound');
         */
-        this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
+        //this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
+        this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.DOWN, Phaser.Keyboard.UP, Phaser.Keyboard.SPACEBAR ]);
     },
     
     //IS called one per frame.
