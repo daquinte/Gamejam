@@ -4,6 +4,12 @@
 //mover el player.
 var PlayerState = {'RUN':0,'STOP':1, 'HIDE':2};
 var Direction = {'LEFT':0, 'RIGHT':1, 'UP':2, 'DOWN':3, 'NONE':4}
+// Contrles para mando
+var PadXBOX;
+var ButtonA;
+var ButtonX;
+var ButtonB;
+var ButtonY;
 
 //var nextJump = 0;//Contador para el próximo salto
 
@@ -142,6 +148,10 @@ function Player(game,posX,posY)
 
     this.game.camera.follow(this,Phaser.Camera.FOLLOW_LOCKON);//La cámara te sigue
 
+    game.input.gamepad.start();
+        PadXBOX = game.input.gamepad.pad1;
+        PadXBOX.addCallbacks(this, {onConnect: this.addButtons});
+
 };
 
 Player.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
@@ -220,19 +230,27 @@ Player.prototype.GetMovement= function()
 {
     var movement = Direction.NONE
     //Move Right
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || 
+        (PadXBOX.isDown(Phaser.Gamepad.XBOX360_DPAD_RIGHT) || 
+            PadXBOX.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.1))
         movement = Direction.RIGHT;
         
     //Move Left
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || 
+        (PadXBOX.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT) || 
+            PadXBOX.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.1))
         movement = Direction.LEFT;
 
        //Move Up
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.UP) || 
+        (PadXBOX.isDown(Phaser.Gamepad.XBOX360_DPAD_UP) || 
+            PadXBOX.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) < -0.1))
         movement = Direction.UP;
 
        //Move Down
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN) || 
+        (PadXBOX.isDown(Phaser.Gamepad.XBOX360_DPAD_DOWN) || 
+            PadXBOX.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) > 0.1))
         movement = Direction.DOWN;
 
 
@@ -241,6 +259,37 @@ Player.prototype.GetMovement= function()
 
 };
 
+Player.prototype.addButtons = function () {
+        ButtonA = PadXBOX.getButton(Phaser.Gamepad.XBOX360_A);
+        ButtonX = PadXBOX.getButton(Phaser.Gamepad.XBOX360_X);
+        ButtonB = PadXBOX.getButton(Phaser.Gamepad.XBOX360_B);
+        ButtonY = PadXBOX.getButton(Phaser.Gamepad.XBOX360_Y);
+
+        //funcionalidades de los botones
+        /*buttonA.onDown.add(function(){
+            jumping = true;
+        }, this);
+
+        buttonA.onUp.add(function(){
+            jumping = false;
+        }, this);
+
+        buttonX.onDown.add(function(){
+            shooting = true;
+        }, this);
+
+        buttonX.onUp.add(function(){
+            shooting = false;
+        }, this);
+
+        buttonB.onDown.add(function(){
+            attacking = true;
+        }, this);
+
+        buttonB.onUp.add(function(){
+            attacking = false;
+        }, this);*/
+    };
 
 ///////////////PLAYER///////////////////////
 
