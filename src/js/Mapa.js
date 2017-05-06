@@ -12,7 +12,7 @@ var ObjectPhysical = Objetos.ObjectPhysical;
 
 var Entity= Personajes.Entity;
 var Player= Personajes.Player;
-//var Enemy= Personajes.Enemy;
+var Enemy= Personajes.Enemy;
 
 function BuildMap(game)
 {
@@ -32,20 +32,21 @@ function BuildMap(game)
     	//Colisiones con el plano de muerte y con el plano de muerte y con suelo.
     	this.game.map.setCollisionBetween(1, 500, true, 'Colisiones');
 
+
         //Limites de colisiones
         this.game.world.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);//Límite del mundo
         
         this.player = new Personajes.Player(this.game,300,300);
         this.game.world.addChild(this.player);
 
-      //  var enemy = new Personajes.Enemy(this.game,210,750);
+        var enemy = new Personajes.Enemy(this.game,210,750, this.player);
 
 
-       // this.enemies = this.game.add.group();
-     //this.enemies.add(enemy);
+        this.enemies = this.game.add.group();
+        this.enemies.add(enemy);
    
 
-        //this.game.world.addChild(this.enemies);
+        this.game.world.addChild(this.enemies);
 
 
         //var gemBlue = new Gem(this.game,900,190,'gemaAzul');
@@ -77,11 +78,11 @@ BuildMap.prototype.getColisionLayer = function(){
 BuildMap.prototype.update_ = function(){
 
     this.player.update_();
-    /*
+    
     this.enemies.forEach(function(enemy) {
         enemy.updateEnemy_();
     });
-*/
+
 }
 
 BuildMap.prototype.destroy = function()

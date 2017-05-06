@@ -59,68 +59,16 @@ Entity.prototype.isTouching= function()
  ////////////ENTITY////////////////////////
 
 
-
-/*
-/////////////////ENEMY////////////////////
-
-
-function Enemy(game,posX,posY){
-
-    Entity.call(this,game,200,Direction.LEFT,posX, posY,'enemy'); 
-    this.animations.add('walk',[1,2],10,true);
-    this.animations.add('dead',[3],1,false);
-    this.animations.play('walk');
-};
-
-Enemy.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
-Enemy.constructor = Enemy;
-
-Enemy.prototype.updateEnemy_ = function()
-{
-    var moveDirection = new Phaser.Point(0, 0);
-    if(this._direction === Direction.RIGHT){
-        moveDirection.x = this._speed;
-        this.changeDirectionLeft();
-    }
-    else if (this._direction === Direction.LEFT){
-        moveDirection.x = -this._speed;
-        this.changeDirectionRight();
-    }
-
-    this.changeDirectionEnemy();
-    this.movement(moveDirection.x);
-
-};
-
-Enemy.prototype.changeDirectionEnemy = function(){//Cambia la dirección al chocar una pared
-    if(this.isTouchingRight())
-        this._direction = Direction.LEFT;
-
-
-    else if(this.isTouchingLeft())
-        this._direction = Direction.RIGHT;
-
-};
-
-Enemy.prototype.isTouchingUp = function()
-{
-    if (this.scale.y > 0)
-        return (this.body.touching.up || this.body.blocked.up);
-    else
-        return (this.body.touching.down || this.body.blocked.down);
-
-};
-
-/////////////////ENEMY////////////////////
-*/
-
-
 ///////////////PLAYER///////////////////////
 
 function Player(game,posX,posY)
 {
     Entity.call(this,game,400,Direction.NONE,posX,posY,'player');
     this._playerState= PlayerState.STOP; //estado del player
+
+    this.actPosX = posX;
+    this.actPosY = posY;
+
 /*
 	//nombre de la animación, frames, framerate, isloop
     this.animations.add('run',[3,4,5],10,true);
@@ -152,6 +100,7 @@ Player.prototype.update_ = function()
 {
 	var moveDirection = new Phaser.Point(0, 0);
     var movement = this.GetMovement();
+    this.SetPosAct(movement.x, movement.y);    //Actualizamos la posicion del jugador para que la sepa el guardia
 
     //transitions
     switch(this._playerState)
@@ -207,10 +156,17 @@ Player.prototype.update_ = function()
                 moveDirection.y = this._speed;
                // this.changeDirectionLeft();
             }
+
+           
+
             this.movement(moveDirection.x, moveDirection.y);
+
+           
 
             break;    
     }
+
+
 };
 
 
@@ -239,9 +195,71 @@ Player.prototype.GetMovement= function()
         
     return movement;
 
+
+
 };
 
+Player.prototype.GetActPos = function (){
+    var posAct = new Phaser.Point(this.actPosX, this.actPosY);
+    return posAct;
+};
+
+Player.prototype.SetPosAct = function (newPosX,newPosY){
+      this.actPosX = newPosX;
+      this.actPosY = newPosY;
+};
 
 ///////////////PLAYER///////////////////////
 
-module.exports = {Player: Player, /*Enemy: Enemy,*/ Entity: Entity};
+/////////////////ENEMY////////////////////
+
+
+function Enemy(game,posX,posY,player){
+
+    Entity.call(this,game,200,Direction.LEFT,posX, posY,'enemy'); 
+   // this.animations.add('walk',[1,2],10,true);
+    //this.animations.add('dead',[3],1,false);
+    //this.animations.play('walk');
+    this.player = player;
+};
+
+Enemy.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
+Enemy.constructor = Enemy;
+
+Enemy.prototype.updateEnemy_ = function()
+{
+    var moveDirection = this.player.GetActPos();
+    //new Phaser.Point(this.player.GetPosAct().x,this.player.GetPosAct().y); 
+    //this.player.GetActPos();
+
+    console.log(moveDirection.x);
+
+    //this.changeDirectionEnemy();
+    this.movement(moveDirection);
+
+    this.game.physics.arcade.moveToXY(this,moveDirection.x,moveDirection.y,60,0);
+
+};
+
+Enemy.prototype.changeDirectionEnemy = function(){//Cambia la dirección al chocar una pared
+    if(this.isTouchingRight())
+        this._direction = Direction.LEFT;
+
+
+    else if(this.isTouchingLeft())
+        this._direction = Direction.RIGHT;
+
+};
+
+Enemy.prototype.isTouchingUp = function()
+{
+    if (this.scale.y > 0)
+        return (this.body.touching.up || this.body.blocked.up);
+    else
+        return (this.body.touching.down || this.body.blocked.down);
+
+};
+
+/////////////////ENEMY////////////////////
+
+module.exports = {Player: Player, Enemy: Enemy, Entity: Entity};

@@ -55,7 +55,7 @@ var PreloaderScene = {
       this.game.load.image('player', 'images/gemBlue.png');//cargar sprites del tilemap
 
       //this.game.load.spritesheet('player','images/foxSpriteSheet.png',56,80);
-      //this.game.load.spritesheet('enemy','images/enemy.png',77,53);
+      this.game.load.image('enemy','images/enemy.png');
 
       //TILES
       this.game.load.image('tiles', 'images/tileset.png');//cargar sprites del tilemap

@@ -68,8 +68,8 @@ var PlayScene =
         */
     },
 
-   /*//Comprueba si el jugador ha muerto por colision con la capa muerte o con el enemigo
-    checkPlayerDeath: function()
+   //Comprueba si el jugador ha muerto por colision con la capa muerte o con el enemigo
+    /*checkPlayerDeath: function()
     {
         var enemyDeath = false;
         var playerDeath = false;
@@ -93,10 +93,10 @@ var PlayScene =
             this.destroy();
         }
     },
-
+*/
   checkEnemyDeath: function(enemy){
     if(enemy.isTouchingUp()){
-        this.spiderSound.play();
+        //this.spiderSound.play();
         enemy.destroy();
         return true;
     }
@@ -147,7 +147,7 @@ var PlayScene =
         this.destroy();
         this.game.state.start('preloader');
         
-    },*/
+    },
 
     //Configura la escena al inicio
     configure: function()
