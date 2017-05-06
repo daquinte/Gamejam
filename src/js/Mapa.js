@@ -41,7 +41,7 @@ function BuildMap(game)
         this.game.world.addChild(this.player);
 
         var enemy = new Personajes.Enemy(this.game,210,750, this.player);
-        var guardia = new Personajes.Guardia(this.game, 500,500, this.player);
+        var guardia = new Personajes.Guardia(this.game, 400,400, this.player);
 
         this.enemies = this.game.add.group();
         this.enemies.add(enemy);

@@ -229,7 +229,7 @@ Enemy.prototype.updateEnemy_ = function()
     //new Phaser.Point(this.player.GetPosAct().x,this.player.GetPosAct().y); 
     //this.player.GetActPos();
 
-    console.log(moveDirection);
+    //console.log(moveDirection);
 
     //this.changeDirectionEnemy();
     //this.movement(moveDirection);
@@ -266,25 +266,15 @@ Enemy.prototype.isTouchingUp = function()
 
 /////////////////POLY GUARDIA////////////////////
 /////////////////GUARDIA////////////////////
-function Guardia(game,posX,posY,player){
+function Guardia(game,posCreacionX,posCreacionY,player){
 
-    Entity.call(this,game,200,Direction.UP,posX, posY,'guardia'); 
+    Entity.call(this,game,200,Direction.UP,posCreacionX, posCreacionY,'guardia'); 
    // this.animations.add('walk',[1,2],10,true);
     //this.animations.add('dead',[3],1,false);
     //this.animations.play('walk');
     this.player = player;
 
-    //this.poly = new Phaser.Polygon([ new Phaser.Point (posX,posY), new Phaser.Point (posX*Math.cos(60),posX*Math.sin(60)), new Phaser.Point (posX*Math.cos(-60),posX*Math.sin(-60))]);
-    this.poly = new Phaser.Polygon([ new Phaser.Point (posX,posY), new Phaser.Point (posX*Math.cos(60),posY*Math.sin(60)), new Phaser.Point (posX*Math.cos(-60),posY*Math.sin(-60))]);
-
-
-    this.graphics = this.game.add.graphics(posX, posY);
-
-    this.graphics.beginFill(0xFF33ff);
-    this.graphics.drawPolygon(this.poly.points);
-    this.graphics.endFill();
-
-    this.addChild(this.graphics);
+    
 };
 
 Guardia.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
@@ -292,6 +282,19 @@ Guardia.constructor = Guardia;
 
 Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar movidas? 
 {
+
+    this.poly = new Phaser.Polygon([ new Phaser.Point (this.body.x,this.body.y), new Phaser.Point (this.body.x*Math.cos(60), this.body.y *Math.sin(60)), 
+        new Phaser.Point (this.body.x*Math.cos(-60),this.body.y*Math.sin(-60))]);
+
+
+    this.graphics = this.game.add.graphics(this.body.x, this.body.y);
+
+    this.graphics.beginFill(0xFF33ff);
+    this.graphics.drawPolygon(this.poly.points);
+    this.graphics.endFill();
+
+    this.addChild(this.graphics);
+
    /* var rnd = Math.floor((Math.random() * 4) + 1); 
 
     switch (rnd){
@@ -315,7 +318,9 @@ Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar 
     */
             this.graphics.clear();
 
-            if (this.poly.contains(this.game.input.x , this.game.input.y)){
+            if (this.poly.contains(this.player.getPosX(), this.player.getPosY())){
+
+                    console.log(this.player.getPosX(), this.player.getPosY());
                   this.graphics.beginFill(0xFF3300);
                 console.log ("Hola estás dentro de mi, me estás oprimiendo");
             }
@@ -325,8 +330,8 @@ Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar 
              console.log ("Cuack");
          }
 
-             this.graphics.drawPolygon(this.poly.points);
-             this.graphics.endFill();
+            this.graphics.drawPolygon(this.poly.points);
+            this.graphics.endFill();
 
   var moveDirection = new Phaser.Point(0, 0);
 
@@ -348,10 +353,11 @@ Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar 
         //this.changeDirectionDown();
     }
     //this.changeDirectionGuardia();
-    this.movement(moveDirection.x, moveDirection.y);
+    //this.movement(moveDirection.x, moveDirection.y);
 
 
-    console.log("bing bing BONG");
+   // console.log("bing bing BONG");
+
 };
 
 Guardia.prototype.changeDirectionGuardia = function(){//Cambia la dirección al chocar una pared
