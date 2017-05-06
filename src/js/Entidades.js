@@ -258,4 +258,85 @@ Enemy.prototype.isTouchingUp = function()
 
 /////////////////ENEMY////////////////////
 
-module.exports = {Player: Player, Enemy: Enemy, Entity: Entity};
+/////////////////GUARDIA////////////////////
+function Guardia(game,posX,posY,player){
+
+    Entity.call(this,game,200,Direction.UP,posX, posY,'guardia'); 
+   // this.animations.add('walk',[1,2],10,true);
+    //this.animations.add('dead',[3],1,false);
+    //this.animations.play('walk');
+    this.player = player;
+};
+
+Guardia.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
+Guardia.constructor = Guardia;
+
+Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar movidas? 
+{
+    var rnd = Math.floor((Math.random() * 4) + 1); 
+
+    switch (rnd){
+
+        case 0:
+          this._direction = Direction.RIGHT;
+        break;
+
+            case 1:
+          this._direction = Direction.LEFT;
+        break;
+
+            case 2:
+          this._direction = Direction.UP;
+        break;
+
+            case 3:
+          this._direction = Direction.DOWN;
+        break;
+    }
+
+  var moveDirection = new Phaser.Point(0, 0);
+
+    if(this._direction === Direction.RIGHT){
+        moveDirection.x = this._speed;
+        //this.changeDirectionLeft();
+    }
+    else if (this._direction === Direction.LEFT){
+        moveDirection.x = -this._speed;
+        //this.changeDirectionRight();
+    }
+
+    else if (this._direction === Direction.UP){
+        moveDirection.y = -this._speed;
+        //this.changeDirectionUp();
+    }
+    else if (this._direction === Direction.DOWN){
+        moveDirection.y = this._speed;
+        //this.changeDirectionDown();
+    }
+    //this.changeDirectionGuardia();
+    this.movement(moveDirection.x, moveDirection.y);
+
+
+    console.log("bing bing BONG");
+};
+
+Guardia.prototype.changeDirectionGuardia = function(){//Cambia la dirección al chocar una pared
+    if(this.isTouchingRight())
+        this._direction = Direction.LEFT;
+
+
+    else if(this.isTouchingLeft())
+        this._direction = Direction.RIGHT;
+
+};
+
+Guardia.prototype.isTouchingUp = function()
+{
+    if (this.scale.y > 0)
+        return (this.body.touching.up || this.body.blocked.up);
+    else
+        return (this.body.touching.down || this.body.blocked.down);
+
+};
+
+module.exports = {Player: Player, Enemy: Enemy, Guardia: Guardia, Entity: Entity};

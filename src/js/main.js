@@ -57,6 +57,8 @@ var PreloaderScene = {
       //this.game.load.spritesheet('player','images/foxSpriteSheet.png',56,80);
       this.game.load.image('enemy','images/enemy.png');
 
+      this.game.load.image('guardia','images/guardia.png');
+
       //TILES
       this.game.load.image('tiles', 'images/tileset.png');//cargar sprites del tilemap
 

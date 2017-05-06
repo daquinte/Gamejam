@@ -13,6 +13,7 @@ var ObjectPhysical = Objetos.ObjectPhysical;
 var Entity= Personajes.Entity;
 var Player= Personajes.Player;
 var Enemy= Personajes.Enemy;
+var Guardia= Personajes.Guardia;
 
 function BuildMap(game)
 {
@@ -40,7 +41,7 @@ function BuildMap(game)
         this.game.world.addChild(this.player);
 
         var enemy = new Personajes.Enemy(this.game,210,750, this.player);
-
+        var guardia = new Personajes.Guardia(this.game, 500,500, this.player);
 
         this.enemies = this.game.add.group();
         this.enemies.add(enemy);
@@ -48,6 +49,11 @@ function BuildMap(game)
 
         this.game.world.addChild(this.enemies);
 
+        //----
+        this.guardias = this.game.add.group();
+        this.guardias.add(guardia);
+
+        this.game.world.addChild(this.guardias);
 
         //var gemBlue = new Gem(this.game,900,190,'gemaAzul');
 
@@ -83,6 +89,9 @@ BuildMap.prototype.update_ = function(){
         enemy.updateEnemy_();
     });
 
+      this.guardias.forEach(function(guardia) {
+        guardia.updateEnemy_();
+    });
 }
 
 BuildMap.prototype.destroy = function()
