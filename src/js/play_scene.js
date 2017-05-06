@@ -11,19 +11,19 @@ var PlayScene =
     //Método constructor...
     create: function () 
     {
-        this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.UP,Phaser.Keyboard.DOWN]);
+        this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.UP,Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR]);
         this.mapa = new Mapa(this.game);
      
         this.configure();
-        this.tiempo = 20;
+        this.hora = 9;
+        this.minuto = 0;
         this.dia = 0;
         this.timePaused = false;
 
-        this.texto = this.game.add.text(this.game.camera.x + 400,this.game.camera.y +100,"Hora: " + this.tiempo);
+        this.texto = this.game.add.text(this.game.camera.x + 400,this.game.camera.y +100, this.hora + " : " + this.minuto);
 
-        console.log(this.mapa.player.posX);
-        this.posIniX = this.mapa.player.posX;
-        this.posIniY = this.mapa.player.posY;
+        this.posIniX = this.mapa.player.x;
+        this.posIniY = this.mapa.player.y;
 
          this.texto.font = 'Poppins';//Elegimos la fuente
         this.texto.anchor.set(0.5);//Anclamos el texto
@@ -34,7 +34,11 @@ var PlayScene =
 
         this.texto.fixedToCamera = true;
 
-        this.aumentaHora();
+        this.createButtons();
+
+        this.aumentaTiempo();
+
+        this.game.estado = {};
 
         //Creamos la pausa
        // this.pausa = new Pausa(this.game,this.mapa.player.getAnimations(),this.mapa.enemies , this.mapa.musica);
@@ -45,24 +49,59 @@ var PlayScene =
         this.gemSound = this.game.add.audio('gemSound');
         this.rocketSound = this.game.add.audio('rocketSound');
         */
-        this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
     },
 
-    aumentaHora: function ()
-    {
-        this.tiempo++;
-        this.texto.text = "Hora: " + this.tiempo;
+    createButtons: function (){
+        //Añadimos el botón
+        this.buttonCelda = this.game.add.button(0, 
+                                               0, 
+                                               'button', 
+                                               this.CeldaOnClick, 
+                                               this, 2, 0, 0);
+        this.buttonCelda.anchor.set(0.5);//Anclamos el botón
 
-        if(this.tiempo == 22)
+        var textCelda = this.game.add.text(0, 0, "Volver a la celda");//Creamos el texto
+        textCelda.font = 'Poppins';//Elegimos la fuente
+        textCelda.anchor.set(0.5);//Anclamos el texto
+        //textCelda.fill = '#43d637';//PODEMOS PODER COLOR ASÍ
+
+        textCelda.fill = '#FFA500';
+        textCelda.stroke = '#FF0000';
+        textCelda.strokeThickness = 3;
+        textCelda.fontSize = 16;
+
+
+        this.buttonCelda.addChild(textCelda);//Metemos el texto en el botón
+
+        this.buttonCelda.visible = false;
+
+
+    },
+
+    aumentaTiempo: function ()
+    {
+          if(!this.timePaused){
+        this.minuto+=10;
+      
+        if(this.minuto === 60){
+            this.minuto = 0;
+            this.hora++;
+            this.texto.text = this.hora + " : " + "00";
+
+        }
+        else{
+        this.texto.text = this.hora + " : " + this.minuto;
+    }
+        if(this.hora === 22)
         {
             this.mapa.player.movement(0,0);
             this.timePaused = true;
 
         }
-        
+        }
         var timer = this.game.time.create(false);
 
-        timer.add(10000, this.aumentaHora, this);
+        timer.add(1000, this.aumentaTiempo, this);
         timer.start();
         
     },
@@ -70,13 +109,14 @@ var PlayScene =
     //IS called one per frame.
     update: function () 
     {
+
         if (!this.timePaused)
         {
-            console.log("hola");
 
             //UPDATE DE TODAS LAS ENTIDADES
             //COLISION JUGADOR - TILES
             this.game.physics.arcade.collide(this.mapa.player, this.mapa.getColisionLayer());
+            this.game.physics.arcade.collide(this.mapa.player, this.mapa.getObjColisionLayer());
 
             //COLISION ENEMIGOS - TRIGGERS
             /*
@@ -105,27 +145,7 @@ var PlayScene =
         }
         else
         {
-             //Añadimos el botón
-            this.buttonCelda = this.game.add.button(this.game.world.centerX  -50, 
-                                               this.game.world.centerY, 
-                                               'button', 
-                                               this.CeldaOnClick, 
-                                               this, 2, 0, 0);
-            this.buttonCelda.anchor.set(0.5);//Anclamos el botón
-
-            this.buttonCelda.scale.x*= 1.5;
-            this.buttonCelda.scale.y*= 1.5;
-
-            var textCelda = this.game.add.text(0, 0, "Volver a la celda");//Creamos el texto
-            textCelda.font = 'Poppins';//Elegimos la fuente
-            textCelda.anchor.set(0.5);//Anclamos el texto
-            //textCelda.fill = '#43d637';//PODEMOS PODER COLOR ASÍ
-
-            textCelda.fill = '#FFA500';
-            textCelda.stroke = '#FF0000';
-            textCelda.strokeThickness = 3;
-
-            this.buttonCelda.addChild(textCelda);//Metemos el texto en el botón
+            this.ChooseNight();
         }
         /*
         else if (this.pausa.goToMenu())
@@ -138,21 +158,26 @@ var PlayScene =
         */
     },
 
+    ChooseNight: function()
+    {
+       this.buttonCelda.visible = true;
+       this.buttonCelda.x = this.mapa.player.x - 100;
+       this.buttonCelda.y = this.mapa.player.y - 100;
+    },
+
      //Al pulsar el botón
     CeldaOnClick: function(){
         this.mapa.player.x = this.posIniX;
         this.mapa.player.y = this.posIniY;
         this.mapa.player.body.position = new Phaser.Point(this.posIniX, this.posIniY);
         //this.mapa.player.body.position.y = ;
-        this.tiempo = 9;
-        this.texto.text = "Hora: " + this.tiempo;
+        this.hora = 9;
+        this.texto.text = "Hora: " + this.hora;
         this.buttonCelda.visible = false;
-
 
         this.dia++;
         this.timePaused = false;
         //mover al jugador y reiniciar hora
-
     } ,
 
    /*//Comprueba si el jugador ha muerto por colision con la capa muerte o con el enemigo
@@ -214,6 +239,7 @@ var PlayScene =
                 && this.game.input.keyboard.isDown(Phaser.Keyboard.E) &&
                 this.game.time.now > nextConver)
             {
+                console.log(this.game.estado.alimento1 && this.game.estado.alimento2 && this.game.estado.alimento3);
                 NPC.onCollision();
                 //this.gemSound.play();
                 //this.mapa.currentGems--;

@@ -52,6 +52,8 @@ var MenuScene = {
 
         textControl.fill = '#FFA500';
 
+        this.buttonControl.addChild(textControl);//Metemos el texto en el botón
+
         this.textTutorial = this.game.add.text(30,400,"Controles:"+'\n'+"-Puedes moverte con las flechas de direccion" + '\n' +
             "-Puedes saltar con SpaceBar"+ '\n' + "-Puedes agarrarte a las paredes con la tecla G" + '\n' + "-Puedes saltar mientras estás agarrado con SpaceBar"
              + '\n' + "-Puedes soltarte de las paredes con la tecla H");
@@ -60,9 +62,6 @@ var MenuScene = {
         this.textTutorial.fontSize = 20;
 
         this.textTutorial.visible = false;
-
-         this.buttonControl.addChild(textControl);//Metemos el texto en el botón
-
     },
     
     //Al pulsar el botón

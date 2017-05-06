@@ -1,0 +1,38 @@
+//------------------------MENU------------------------------------
+-Encontrar una imagen de fondo para el menu acorde
+-Escribir en el fondo con una tipografía el nombre del juego
+-Encontrar botones acordes para el menu y todo el juego
+-Crear texto de tutorial en el menu explicando de que va el juego
+-Musica del menu
+
+//-------------------------------WEB--------------------------------------------------
+-Toquetear la web para poner otros colores y otro texto, no demasiado, ya que no es muy importante
+
+//--------------------------GENERAL----------------------------------------------------
+-Decidir el nombre del juego
+
+//---------------------------------PLAYER-----------------------------------------
+-Sprites de personaje
+-Integrar animaciones de personaje
+
+//---------------------------------------ENEMIGO----------------------------------------
+-IA del enemigo
+-Colision con el enemigo te lleva de vuelta a la cama 
+
+//-------------------------------------NPCS---------------------------------
+-Sprites de NPCs
+-Textos de monje integrados
+
+//-------------------------------------MAPA-----------------------------
+-Llevar esos tres objetos al monje para que prepare cerveza Y PASE ALGO
+-
+
+//------------------------------OBJETOS-------------------------------------
+-Mostrar que has conseguido las llaves
+
+
+
+
+//CAPAS DE MAPAS
+-Puertas
+-Enemigo(Area)
