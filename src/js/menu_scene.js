@@ -70,7 +70,8 @@ var MenuScene = {
     //Al pulsar el botón
     actionOnClick: function(){
        // this.sound.play();
-        //this.music.destroy();
+        //this.music.destroy()
+    
         this.game.state.start('preloader');//Vamos al state de carga
     } ,
 

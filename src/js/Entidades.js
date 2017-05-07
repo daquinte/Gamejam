@@ -118,10 +118,7 @@ Player.prototype.update_ = function()
 	var moveDirection = new Phaser.Point(0, 0);
     var movement = this.GetMovement();
     
-    //
-    if(this.game.physics.arcade.collide(this.Urss, this)){
-        invisibilidad= true;
-    }
+
     //transitions
     switch(this._playerState)
     {
@@ -365,7 +362,7 @@ function Guardia(game,posCreacionX,posCreacionY,player){
     this.player = player;
     this._estActGuardia = estadosGuardia.SOSEGADO;
 
-  
+     this._zonaHoraria = false;         //Si es false, es de día y apenas se mueve. Si es de noche ataca.
 };
 
 Guardia.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
@@ -374,78 +371,81 @@ Guardia.constructor = Guardia;
 Guardia.prototype.updateGuardia_ = function()        //Se llama igual para evitar movidas? 
 {
 
-    if (this.game.physics.arcade.collide(this.player, this)){
-        this.player.setPosPj(this.player.getPosCamaX(), 300);
+    if(this._zonaHoraria === true){
+        if (this.game.physics.arcade.collide(this.player, this)){
+            this.player.setPosPj(this.player.getPosCamaX(), 300);
+
+        }
+
+        //Hallamos la distancia
+        this.distance = Math.sqrt(  ((this.player.getPosX()-this.body.x) *(this.player.getPosX()-this.body.x)) 
+         +   ((this.player.getPosY()-this.body.y)*(this.player.getPosY()-this.body.y)));
+
+        //Comprobamos si el jugador está en el area del guardia
+        if(this.distance <= 100 && this.distance >= 1) {
+            this._estActGuardia = estadosGuardia.ALERTA;
+        }
+
+        else this._estActGuardia = estadosGuardia.SOSEGADO; 
+
+        //En función del nuevo estado, vamos a añadir o no un parámetro a la velocidad
+        var adder;
+        if (this._estActGuardia === estadosGuardia.SOSEGADO) {
+            this.adder = 1;
+
+        }
+        else if (this._estActGuardia === estadosGuardia.ALERTA){
+            this._direction = Direction.UP;
+            this.adder = 2;
+        }
+
+
+      
+
+        //Switch entre los dos tipos de movimiento del guardia
+
+        switch(this._estActGuardia){
+
+
+             case estadosGuardia.SOSEGADO:
+
+             var moveDirection = new Phaser.Point(0, 0);
+
+                if(this._direction === Direction.RIGHT){
+                moveDirection.x = (this._speed*this.adder);
+                //this.changeDirectionLeft();
+                }
+                else if (this._direction === Direction.LEFT){
+                    moveDirection.x = -(this._speed*this.adder);
+                    //this.changeDirectionRight();
+                }
+
+                else if (this._direction === Direction.UP){
+                    moveDirection.y = -(this._speed*this.adder);
+
+                    //this.changeDirectionUp();
+                }
+                else if (this._direction === Direction.DOWN){
+                    moveDirection.y = (this._speed*this.adder);
+                    //this.changeDirectionDown();
+                }
+            break;
+
+
+            case estadosGuardia.ALERTA:
+                 var moveDirection = new Phaser.Point(this.player.getPosX(), this.player.getPosY());
+        
+                if (this.body.x != moveDirection.x && this.body.y != moveDirection.y ) {
+                    this.game.physics.arcade.moveToXY(this,moveDirection.x,moveDirection.y,60,0);
+                }
+            break;
+        
+
+        //this.changeDirectionGuardia();
+        this.movement(moveDirection.x, moveDirection.y);
+        }
     }
-
-    //Hallamos la distancia
-    this.distance = Math.sqrt(  ((this.player.getPosX()-this.body.x) *(this.player.getPosX()-this.body.x)) 
-     +   ((this.player.getPosY()-this.body.y)*(this.player.getPosY()-this.body.y)));
-
-    //Comprobamos si el jugador está en el area del guardia
-    if(this.distance <= 100 && this.distance >= 1) {
-        this._estActGuardia = estadosGuardia.ALERTA;
-    }
-
-    else this._estActGuardia = estadosGuardia.SOSEGADO; 
-
-    //En función del nuevo estado, vamos a añadir o no un parámetro a la velocidad
-    var adder;
-    if (this._estActGuardia === estadosGuardia.SOSEGADO) {
-        this.adder = 1;
-
-    }
-    else if (this._estActGuardia === estadosGuardia.ALERTA){
-        this._direction = Direction.UP;
-        this.adder = 2;
-    }
-
-
-  
-
-    //Switch entre los dos tipos de movimiento del guardia
-
-    switch(this._estActGuardia){
-
-
-         case estadosGuardia.SOSEGADO:
-
-         var moveDirection = new Phaser.Point(0, 0);
-
-            if(this._direction === Direction.RIGHT){
-            moveDirection.x = (this._speed*this.adder);
-            //this.changeDirectionLeft();
-            }
-            else if (this._direction === Direction.LEFT){
-                moveDirection.x = -(this._speed*this.adder);
-                //this.changeDirectionRight();
-            }
-
-            else if (this._direction === Direction.UP){
-                moveDirection.y = -(this._speed*this.adder);
-
-                //this.changeDirectionUp();
-            }
-            else if (this._direction === Direction.DOWN){
-                moveDirection.y = (this._speed*this.adder);
-                //this.changeDirectionDown();
-            }
-        break;
-
-
-        case estadosGuardia.ALERTA:
-             var moveDirection = new Phaser.Point(this.player.getPosX(), this.player.getPosY());
-    
-            if (this.body.x != moveDirection.x && this.body.y != moveDirection.y ) {
-                this.game.physics.arcade.moveToXY(this,moveDirection.x,moveDirection.y,60,0);
-            }
-        break;
-    
-
-    //this.changeDirectionGuardia();
-    this.movement(moveDirection.x, moveDirection.y);
-    }
-   // console.log("bing bing BONG");
+       // console.log("bing bing BONG");
 
 };
 

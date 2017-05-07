@@ -172,7 +172,7 @@ var PlayScene =
             else
                 this.texto.text = this.hora + " : " + this.minuto;
         
-        if(this.hora === 22)
+        if(this.hora >= 22)
             {
                 this.mapa.player.movement(0,0);
                 this.dia++;
@@ -183,7 +183,8 @@ var PlayScene =
         if(this.dia===3)
         {
             //GAMEOVER
-            var caca = 0;
+            //var caca = 0;
+            this.game.state.start('gameOver');//Vamos al state de carga
         }
         
     }
@@ -266,7 +267,7 @@ var PlayScene =
         this.mapa.player.y = this.posIniY;
         this.mapa.player.body.position = new Phaser.Point(this.posIniX, this.posIniY);
         //this.mapa.player.body.position.y = ;
-        this.hora = 9;
+        this.hora = 20;
         this.texto.text = "Hora: " + this.hora;
         this.buttonCelda.visible = false;
 
@@ -391,11 +392,17 @@ var PlayScene =
 
             }
 
+            if (this.hora >= 21){
+                this.mapa.guardia.forEach(function(guardia){
+                   this.mapa.guardia._zonaHoraria === true;     
+                });
+            } 
+
         }.bind(this));
-            
+          
     },
 
-    /*
+   /*
 
     checkFinalLevel: function()
     {
@@ -428,15 +435,7 @@ var PlayScene =
         
     },
 
-    //Configura la escena al inicio
-    configure: function()
-    {
-        //Color de fondo
-        this.game.stage.backgroundColor = '#a9f0ff';
-
-        //Start the Arcade Physics systems
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    },
+    
     
     //Destruimos los recursos tilemap, tiles y logo.
     destroy: function()
@@ -448,7 +447,17 @@ var PlayScene =
 
         this.game.world.setBounds(0,0,800,600);
     }
+    */
 
+    //Configura la escena al inicio
+    configure: function()
+    {
+        //Color de fondo
+        this.game.stage.backgroundColor = '#a9f0ff';
+
+        //Start the Arcade Physics systems
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    },
 };
 
 module.exports = PlayScene;

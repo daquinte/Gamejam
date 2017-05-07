@@ -48,6 +48,8 @@ var PreloaderScene = {
 
       this.game.load.image('gameOver', 'images/gameOver.png');//Imagen del logo
 
+      this.game.load.image('fondoFinal', 'images/escenaFinal.png');//Imagen del logo
+
       //MAPA
       this.game.load.tilemap('tilemap1', 'maps/mapa.json',null,Phaser.Tilemap.TILED_JSON);//Cargar el tilemap(hecho)
       
@@ -164,7 +166,7 @@ var PreloaderScene = {
     }
     */
 
-    this.game.load.image('fondoFinal', 'images/gameOver.png');//Imagen del logo
+    
 
     this.load.onLoadComplete.add(this.loadComplete, this);//Nos suscribimos al evento de cuando finaliza la carga
   },

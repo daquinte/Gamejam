@@ -19,7 +19,7 @@ var GameOver = {
         pj.animations.play('exhausted');*/
 
         //Boton reset game
-        var button = this.game.add.button(300, 200, 
+        var button = this.game.add.button(200, 200, 
                                           'button', 
                                           this.actionOnClick, 
                                           this, 2, 1, 0);
@@ -32,7 +32,7 @@ var GameOver = {
         button.addChild(text);
         
         //Botón vuelta al menu
-        var button2 = this.game.add.button(500, 200, 
+        var button2 = this.game.add.button(600, 200, 
                                           'button', 
                                           this.returnMainMenu, 
                                           this, 2, 1, 0);
@@ -57,10 +57,10 @@ var GameOver = {
     
     actionOnClick: function()
     {
-        this.sound.play();
-        this.music.destroy();
-        if (this.game.currentLevel === 1)
-            this.game.state.start('play');
+        //this.sound.play();
+        //this.music.destroy();
+        //if (this.game.currentLevel === 1)
+        this.game.state.start('play');
 
         /*else if (this.game.currentLevel === 2)
             this.game.state.start('play2');*/

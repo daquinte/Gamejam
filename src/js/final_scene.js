@@ -10,7 +10,7 @@ var FinalScene = {
         //Añadimos sprite de logo
         var logo = this.game.add.sprite(this.game.world.centerX, 
                                         this.game.world.centerY, 
-                                        'escenaFinal');
+                                        'fondoFinal');
         logo.anchor.setTo(0.5, 0.5);//Anclamos el logo
 
         //Añadimos el botón
