@@ -5,7 +5,7 @@ var PlayScene = require('./play_scene.js');
 //var PlayScene2 = require('./play_scene2.js');
 var GameOverScene = require('./gameover_scene.js');
 var MenuScene = require('./menu_scene.js');
-//var FinalScene = require('./final_scene.js');
+var FinalScene = require('./final_scene.js');
 
 
 //Carga imágenes del menu y llama al state menu
@@ -158,7 +158,7 @@ var PreloaderScene = {
   {
     this.game.state.start('play');
     //else   
-     // this.game.state.start('final');
+     //this.game.state.start('final');
   },
 
   //Esto debería avanzar la barra de carga
@@ -199,7 +199,7 @@ function init()
   game.state.add('play', PlayScene);
   //game.state.add('play2', PlayScene2);
   game.state.add('gameOver', GameOverScene);
-  //game.state.add('final', FinalScene);
+  game.state.add('final', FinalScene);
 
 
 //iniciamos el state 'boot'
