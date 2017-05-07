@@ -63,6 +63,19 @@ var PreloaderScene = {
 
       //OBJETOS
       this.game.load.image('gemaAzul','images/gemBlue.png');
+      this.game.load.image('monje','images/monje.png');
+      this.game.load.image('Agua','images/Agua.png');
+      this.game.load.image('Cebada','images/Cebada.png');
+      this.game.load.image('Lupulo','images/Lupulo.png');
+      this.game.load.image('cabeza','images/cabeza.png');  
+      this.game.load.image('llave','images/key.png');
+      this.game.load.image('palero','images/pavoRandom.png');
+      this.game.load.image('sury','images/sury.png');
+      this.game.load.image('raton','images/ratoncillo.png');
+      this.game.load.image('cuervos','images/cuervos.png');
+      this.game.load.image('guardia','images/ratoncillo.png');
+  
+
       //this.game.load.image('gemaRoja','images/gemRed.png');
       //this.game.load.image('gemaAmarilla','images/gemYellow.png');
       //this.game.load.image('gemaVerde','images/gemGreen.png');

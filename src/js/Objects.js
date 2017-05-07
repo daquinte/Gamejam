@@ -28,6 +28,10 @@ Rocket.constructor = Rocket;
 ///////////////ROCKET///////////////////////
 */
 
+function Cuervo(game,posX,posY){
+    PhysicalObject.call(this,game,posX,posY,'cuervo');
+}
+
 
 
 ///////////////COLLECTABLE///////////////////////
@@ -59,9 +63,9 @@ NPC.constructor = NPC;
 NPC.prototype.onCollision = function(){
 
     //this.bocadilloDialogo = this.game.add.sprite(this.posX + 100,this.posY +100,'bocadillo');
-    this.texto = this.game.add.text(this.x + 100,this.y +100,this.mensaje[this.mesIndex]);
+    this.texto = this.game.add.text(this.x - 200,this.y -100,this.mensaje[this.mesIndex]);
     this.texto.fill = '#FFA500';
-    this.texto.fontSize = 20;
+    this.texto.fontSize = 14;
 
     this.mesIndex++;
 
@@ -80,51 +84,5 @@ NPC.prototype.destroyText = function()
     this.texto.visible = false;
 };
 
-function Monje(game,posX,posY,sprite,mensaje)
-{
-   NPC.call(this,game,posX,posY,sprite,mensaje);
 
-
-};
-
-Monje.prototype = Object.create(NPC.prototype);//Ajustamos el prototipo
-Monje.constructor = Monje;
-
-Monje.prototype.onCollision = function(){
-
-    //this.bocadilloDialogo = this.game.add.sprite(this.posX + 100,this.posY +100,'bocadillo');
-    this.texto = this.game.add.text(this.x + 100,this.y +100,this.mensaje[this.mesIndex]);
-    this.texto.fill = '#FFA500';
-    this.texto.fontSize = 20;
-
-    this.mesIndex++;
-
-    if (this.mesIndex === this.mensaje.length)
-        this.mesIndex = 0;
-
-    var timer = this.game.time.create(false);
-    timer.add(2000, this.destroyText, this);
-    timer.start();
-        //this.textTutorial.visible = false;
-      //this.mensaje[mesIndex].
-
-    if(this.game.estado.alimento1 && this.game.estado.alimento2 && this.game.estado.alimento3)
-    {
-        console.log("has ganado");
-    }
-};
-
-///////////////COLLECTABLE///////////////////////
-
-
-/*
-function Flag(game,posX,posY)
-{
-    PhysicalObject.call(this,game,posX,posY,'flag');
-}
-
-Flag.prototype = Object.create(PhysicalObject.prototype);//Ajustamos el prototipo
-Flag.constructor = Flag;
-*/
-
-module.exports = {PhysicalObject: PhysicalObject, Llave: Llave, NPC: NPC, Monje:Monje/*, Rocket: Rocket, Gem: Gem,Flag: Flag*/};
+module.exports = {PhysicalObject: PhysicalObject, Llave: Llave, NPC: NPC/*, Rocket: Rocket, Gem: Gem,Flag: Flag*/};

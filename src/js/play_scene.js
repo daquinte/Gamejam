@@ -17,15 +17,33 @@ var PlayScene =
         this.configure();
         this.hora = 9;
         this.minuto = 0;
-        this.dia = 0;
+        this.dia = 1;
         this.timePaused = false;
+        this.game.numCabeza = 10;
 
         this.texto = this.game.add.text(this.game.camera.x + 400,this.game.camera.y +100, this.hora + " : " + this.minuto);
+        this.textoDia = this.game.add.text(this.game.camera.x + 50 ,this.game.camera.y + 50, "Dia " + this.dia);
+        this.textoCabeza = this.game.add.text(this.game.camera.x + 70 ,this.game.camera.y + 580, "x " + this.game.numCabeza);
 
         this.posIniX = this.mapa.player.x;
         this.posIniY = this.mapa.player.y;
 
-         this.texto.font = 'Poppins';//Elegimos la fuente
+
+
+        //Texto cabeza
+ 
+        this.textoCabeza.font = 'Poppins';//Elegimos la fuente
+        this.textoCabeza.anchor.set(0.5);//Anclamos el texto
+
+        this.textoCabeza.fill = '#FFA500';
+        this.textoCabeza.stroke = '#FF0000';
+        this.textoCabeza.strokeThickness = 3;
+
+        this.textoCabeza.fixedToCamera = true;
+
+
+        //Texto tiempo 
+        this.texto.font = 'Poppins';//Elegimos la fuente
         this.texto.anchor.set(0.5);//Anclamos el texto
 
         this.texto.fill = '#FFA500';
@@ -34,11 +52,70 @@ var PlayScene =
 
         this.texto.fixedToCamera = true;
 
+
+        //Texto dia
+        this.textoDia.font = 'Poppins';//Elegimos la fuente
+        this.textoDia.anchor.set(0.5);//Anclamos el texto
+
+        this.textoDia.fill = '#FFA500';
+        this.textoDia.stroke = '#FF0000';
+        this.textoDia.strokeThickness = 3;
+
+        this.textoDia.fixedToCamera = true;
+
         this.createButtons();
 
         this.aumentaTiempo();
 
         this.game.estado = {};
+
+
+        //Cebada
+        this.dibujoCebada = this.game.add.sprite(this.game.camera.x + 750,this.game.camera.y + 20, 
+                                        'Cebada');
+        this.dibujoCebada.fixedToCamera = true;
+        this.dibujoCebada.visible = false;
+
+
+        //Agua
+        this.dibujoAgua = this.game.add.sprite(this.game.camera.x + 680,this.game.camera.y + 20, 
+                                        'Agua');
+        this.dibujoAgua.fixedToCamera = true;
+        this.dibujoAgua.visible = false;
+
+        //Lupulo
+        this.dibujoLupulo = this.game.add.sprite(this.game.camera.x + 715,this.game.camera.y + 60, 
+                                        'Lupulo');
+        this.dibujoLupulo.fixedToCamera = true;
+        this.dibujoLupulo.visible = false;
+
+         //Cabeza
+        this.cabeza= this.game.add.sprite(this.game.camera.x + 5,this.game.camera.y + 550, 
+                                        'cabeza');
+        this.cabeza.fixedToCamera = true;
+        this.cabeza.visible = true;
+
+
+        //Raton
+        this.raton= this.game.add.sprite(this.game.camera.x + 750,this.game.camera.y + 100, 
+                                        'raton');
+        this.raton.fixedToCamera = true;
+        this.raton.visible = false;
+
+         //Pala
+        this.pala= this.game.add.sprite(this.game.camera.x + 715,this.game.camera.y + 100, 
+                                        'pala');
+        this.pala.fixedToCamera = true;
+        this.pala.visible = false;
+
+
+
+
+
+
+
+
+
 
         //Creamos la pausa
        // this.pausa = new Pausa(this.game,this.mapa.player.getAnimations(),this.mapa.enemies , this.mapa.musica);
@@ -80,28 +157,36 @@ var PlayScene =
 
     aumentaTiempo: function ()
     {
-          if(!this.timePaused){
-        this.minuto+=10;
+        if(!this.timePaused){
+            this.minuto+=10;
       
-        if(this.minuto === 60){
-            this.minuto = 0;
-            this.hora++;
-            this.texto.text = this.hora + " : " + "00";
-
-        }
-        else{
-        this.texto.text = this.hora + " : " + this.minuto;
-    }
+            if(this.minuto === 60){
+                this.minuto = 0;
+                this.hora++;
+                this.texto.text = this.hora + " : " + "00";
+            }
+        
+            else
+                this.texto.text = this.hora + " : " + this.minuto;
+        
         if(this.hora === 22)
-        {
-            this.mapa.player.movement(0,0);
-            this.timePaused = true;
+            {
+                this.mapa.player.movement(0,0);
+                this.dia++;
+                this.timePaused = true;
 
+        
+            }
+        if(this.dia===3)
+        {
+            //GAMEOVER
+            var caca = 0;
         }
-        }
+        
+    }
         var timer = this.game.time.create(false);
 
-        timer.add(1000, this.aumentaTiempo, this);
+        timer.add(3000, this.aumentaTiempo, this);
         timer.start();
     },
     
@@ -116,6 +201,11 @@ var PlayScene =
             //COLISION JUGADOR - TILES
             this.game.physics.arcade.collide(this.mapa.player, this.mapa.getColisionLayer());
             this.game.physics.arcade.collide(this.mapa.player, this.mapa.getObjColisionLayer());
+            if (this.game.physics.arcade.collide(this.mapa.player, this.mapa.getAguaLayer()) && this.game.input.keyboard.isDown(Phaser.Keyboard.E) && this.game.estado.pala)
+                 {
+                    this.game.agua.visible = true;
+                 }
+
 
             //COLISION ENEMIGOS - TRIGGERS
             /*
@@ -135,6 +225,7 @@ var PlayScene =
             //COLISION JUGADOR - GEMAS
 
             //this.checkFinalLevel();
+            //
             this.checkCollisionWithKey();
             this.checkCollisionWithNPCs();
 
@@ -221,9 +312,21 @@ var PlayScene =
         {
             if (this.game.physics.arcade.collide(llave, this.mapa.player))
             {
+                
                 llave.onCollision();
-                //this.gemSound.play();
-                //this.mapa.currentGems--;
+                if(llave.key === 'Cebada')
+                    this.dibujoCebada.visible = true;
+                    //this.gemSound.play();
+                    //this.mapa.currentGems--;
+                else if(llave.key === 'Agua')
+                    this.dibujoAgua.visible = true;
+                else if(llave.key === 'Lupulo')
+                    this.dibujoLupulo.visible = true;
+                else if(llave.key === 'cabeza')
+                    this.textoCabeza.text = "x " + this.game.numCabeza;
+                else if(llave.key === 'raton')
+                    this.raton.visible = true;
+
                 llave.destroy();
             }
         }.bind(this));
@@ -237,15 +340,51 @@ var PlayScene =
             if (this.game.physics.arcade.collide(NPC, this.mapa.player) 
                 && this.game.input.keyboard.isDown(Phaser.Keyboard.E) &&
                 this.game.time.now > nextConver)
-            {
-                console.log(this.game.estado.alimento1 && this.game.estado.alimento2 && this.game.estado.alimento3);
+            {     
+                console.log(NPC);
+                if(NPC.key === 'monje' && this.game.estado.cebada && this.game.estado.agua && this.game.estado.lupulo)
+                {
+                        //Parar enemigos para pasar al almacen
+                }
+                else if(NPC.key === 'palero'){
+                    //Mostrar pala por pantalla
+                    this.game.estado.pala = true;
+                }
+                else if(NPC.key === 'guardia' && this.game.estado.Lupulo === true){//Si hablo con el guardia y llevo el lupulo encima
+                    this.game.estado.charlaGuardia = true;
+                    NPC.mensaje.push("Así que a eso se dedicaba Julián...Gracias, supongo."+  '\n '+ "Por cierto, cuentan que hay un tipo muy extraño" + '\n '+ " en el establo que ha perdido 10 calaveras. Quizá puedas ayudarle.");
+                    
+                }
+                else if(NPC.key === 'sury' && this.game.estado.charlaGuardia){
+                     NPC.mensaje.push("Estaba dormido cuando mis primos se habían ido." + '\n' + "Poco sabía yo del lío en el que se habían metido.");
+                     NPC.mensaje.push("Rodolfo, Ataúlfo y los demás sus cabezas han perdido." + '\n' + "Si sus diez cabezas encuentras, te ayudaré a salir de este sitio.");
+                
+                    
+                }
+                else if(NPC.key === 'sury' && this.game.numCabeza === 0){
+                     NPC.mensaje.push("¡Gracias por salvar a mis primos hoy!" + '\n' + "El poder de la invisibilidad yo te doy! NYEHEHEHEHEHEHEH!!");
+                     //poder de invisibilidad
+                     this.game.estado.pocionObtenida = true;
+                }
+                else if(NPC.key === 'cuervos' && this.game.estado.raton)
+                {
+                    NPC.visible = false;
+                    this.raton.visible = true;
+                    this.game.estado.raton = false;
+                    NPC.destroy();
+                    return;
+                }
+
+
                 NPC.onCollision();
-                //this.gemSound.play();
-                //this.mapa.currentGems--;
+
+
+
                 //NPC.destroy();
                 nextConver = this.game.time.now + 3000;
 
             }
+
         }.bind(this));
             
     },

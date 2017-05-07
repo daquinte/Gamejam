@@ -175,11 +175,10 @@ Player.prototype.update_ = function()
             if(movement !== Direction.NONE)
             {
                 this._playerState = PlayerState.RUN;
-                console.log (this._direction);
+                
 
                 if (this._direction === Direction.DOWN){
 
-                    console.log (this._direction);
                     this.animations.play('runDown');
                 }
 
