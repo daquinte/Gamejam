@@ -17,19 +17,6 @@ var GameOver = {
         /*var pj = this.game.add.sprite(370,400,'fox');
         pj.animations.add('exhausted',[24,25,26],10,true);
         pj.animations.play('exhausted');*/
-
-        //Boton reset game
-        var button = this.game.add.button(300, 200, 
-                                          'button', 
-                                          this.actionOnClick, 
-                                          this, 2, 1, 0);
-        button.anchor.set(0.5);
-
-        //Texto dentro del botón
-        var text = this.game.add.text(0, 0, "Rejugar");
-        text.font = 'Poppins';//Elegimos la fuente
-        text.anchor.set(0.5);
-        button.addChild(text);
         
         //Botón vuelta al menu
         var button2 = this.game.add.button(500, 200, 
@@ -59,7 +46,7 @@ var GameOver = {
     {
         this.sound.play();
         this.music.destroy();
-            this.game.state.start('play');
+            this.game.state.start('preloder');
 
         /*else if (this.game.currentLevel === 2)
             this.game.state.start('play2');*/

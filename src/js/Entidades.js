@@ -376,6 +376,7 @@ Guardia.prototype.updateGuardia_ = function()        //Se llama igual para evita
 
     if (this.game.physics.arcade.collide(this.player, this)){
         this.player.setPosPj(this.player.getPosCamaX(), 300);
+        this.game.dia++;
     }
 
     //Hallamos la distancia
@@ -383,7 +384,7 @@ Guardia.prototype.updateGuardia_ = function()        //Se llama igual para evita
      +   ((this.player.getPosY()-this.body.y)*(this.player.getPosY()-this.body.y)));
 
     //Comprobamos si el jugador está en el area del guardia
-    if(this.distance <= 100 && this.distance >= 1) {
+    if(this.distance <= 300 && this.distance >= 1) {
         this._estActGuardia = estadosGuardia.ALERTA;
     }
 
@@ -397,7 +398,7 @@ Guardia.prototype.updateGuardia_ = function()        //Se llama igual para evita
     }
     else if (this._estActGuardia === estadosGuardia.ALERTA){
         this._direction = Direction.UP;
-        this.adder = 2;
+        this.adder = 2*5;
     }
 
 

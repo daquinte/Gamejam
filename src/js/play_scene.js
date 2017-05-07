@@ -17,14 +17,14 @@ var PlayScene =
         this.mapa = new Mapa(this.game);
      
         this.configure();
-        this.hora = 21;
+        this.hora = 9;
         this.minuto = 0;
-        this.dia = 2;
+        this.game.dia = 1;
         this.timePaused = false;
         this.game.numCabeza = 10;
 
         this.texto = this.game.add.text(this.game.camera.x + 400,this.game.camera.y +100, this.hora + " : " + this.minuto);
-        this.textoDia = this.game.add.text(this.game.camera.x + 50 ,this.game.camera.y + 50, "Dia " + this.dia);
+        this.textoDia = this.game.add.text(this.game.camera.x + 50 ,this.game.camera.y + 50, "Dia " + this.game.dia);
         this.textoCabeza = this.game.add.text(this.game.camera.x + 70 ,this.game.camera.y + 580, "x " + this.game.numCabeza);
 
         this.posIniX = this.mapa.player.x;
@@ -208,17 +208,17 @@ var PlayScene =
             {
                 this.mapa.player.movement(0,0);
                 this.timePaused = true;
-                this.textoDia.text = "Dia " + this.dia;
+                this.textoDia.text = "Dia " + this.game.dia;
         
             }
         else if(this.hora === 24 )
         {
-            this.dia++;
-                this.textoDia.text = "Dia " + this.dia;
+            this.game.dia++;
+                this.textoDia.text = "Dia " + this.game.dia;
 
             this.hora = 1;
         }
-        if(this.dia===3 && this.hora > 8)
+        if(this.game.dia===3 && this.hora > 8)
         {
             //GAMEOVER
             this.game.state.start('gameOver');//Vamos al state de carga
@@ -305,8 +305,8 @@ var PlayScene =
         this.buttonCelda.visible = false;
         this.buttonEscape.visible = false;
 
-        this.dia++;
-        this.textoDia.text = "Dia " + this.dia;
+        this.game.dia++;
+        this.textoDia.text = "Dia " + this.game.dia;
 
         this.timePaused = false;
         //mover al jugador y reiniciar hora
@@ -322,6 +322,8 @@ var PlayScene =
 
         this.timePaused = false;
         //mover al jugador y reiniciar hora
+
+        this.mapa.createGuardias();
     } ,
 
    /*//Comprueba si el jugador ha muerto por colision con la capa muerte o con el enemigo

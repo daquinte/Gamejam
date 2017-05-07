@@ -20,33 +20,15 @@ function BuildMap(game)
 {
     this.game = game;
 
-
+    this._actualizaGuardias = false;
     
     this.createTilemap();
     this.createPlayer();
     this.createObjNoCol();
     
-
-
-
-    var guardia = new Personajes.Guardia(this.game, 400,400, this.player);
-
-   
-
-
-
     this.createKeys();
 
     this.createNPCs();
-
-
-     
-    this.guardias = this.game.add.group();
-    this.guardias.add(guardia);
-
-    this.game.world.addChild(this.guardias);
-
-
 
     this.musica = this.game.add.audio('musicaJuego');
     this.musica.loop = true;
@@ -241,6 +223,106 @@ BuildMap.prototype.createNPCs = function(){
     this.game.world.addChild(this.NPCs);
 };
 
+BuildMap.prototype.createGuardias = function (){
+
+    this.guardias = this.game.add.group();
+
+    var guardia1 = new Personajes.Guardia(this.game, 300,300,this.player);
+
+    this.guardias.add(guardia1);
+
+    var guardia2 = new Personajes.Guardia(this.game, 1830,402,this.player);
+
+    this.guardias.add(guardia2);
+
+     var guardia3 = new Personajes.Guardia(this.game, 1816, 655,this.player);
+    this.guardias.add(guardia3);
+
+     var guardia4 = new Personajes.Guardia(this.game, 3163, 402,this.player);
+    this.guardias.add(guardia4);
+
+     var guardia5 = new Personajes.Guardia(this.game, 3170, 674,this.player);
+    this.guardias.add(guardia5);
+
+    var guardia6 = new Personajes.Guardia(this.game, 4103, 508,this.player);
+    this.guardias.add(guardia6);
+
+    var guardia7 = new Personajes.Guardia(this.game, 3611, 1129,this.player);
+    this.guardias.add(guardia7);
+
+    var guardia8 = new Personajes.Guardia(this.game, 3611, 1636,this.player);
+    this.guardias.add(guardia8);
+
+    var guardia9 = new Personajes.Guardia(this.game, 2791, 1662,this.player);
+    this.guardias.add(guardia9);
+
+    var guardia10 = new Personajes.Guardia(this.game, 2624, 1095,this.player);
+    this.guardias.add(guardia10);
+
+    var guardia11 = new Personajes.Guardia(this.game, 2371, 1095,this.player);
+    this.guardias.add(guardia11);
+
+    var guardia12 = new Personajes.Guardia(this.game, 1398, 1122,this.player);
+    this.guardias.add(guardia12);
+
+    var guardia13 = new Personajes.Guardia(this.game, 1082, 705,this.player);
+    this.guardias.add(guardia13);
+
+    var guardia14 = new Personajes.Guardia(this.game, 1678, 1595,this.player);
+    this.guardias.add(guardia14);
+
+    var guardia15 = new Personajes.Guardia(this.game, 1385, 2249,this.player);
+    this.guardias.add(guardia15);
+
+    var guardia16 = new Personajes.Guardia(this.game, 951, 2075,this.player);
+    this.guardias.add(guardia16);
+
+    var guardia17 = new Personajes.Guardia(this.game, 938, 1709,this.player);
+    this.guardias.add(guardia17);
+
+    var guardia18 = new Personajes.Guardia(this.game, 578, 1729,this.player);
+    this.guardias.add(guardia18);
+
+    var guardia19 = new Personajes.Guardia(this.game, 625, 2548,this.player);
+    this.guardias.add(guardia19);
+
+    var guardia20 = new Personajes.Guardia(this.game, 471, 2868,this.player);
+    this.guardias.add(guardia20);
+
+    var guardia21 = new Personajes.Guardia(this.game, 1743, 2958,this.player);
+    this.guardias.add(guardia21);
+
+    var guardia22 = new Personajes.Guardia(this.game, 2703, 2958,this.player);
+    this.guardias.add(guardia22);
+
+    var guardia23 = new Personajes.Guardia(this.game, 2696, 2558,this.player);
+    this.guardias.add(guardia23);
+
+    var guardia24 = new Personajes.Guardia(this.game, 3301, 2198,this.player);
+    this.guardias.add(guardia24);
+
+    var guardia25 = new Personajes.Guardia(this.game, 3137, 2198,this.player);
+    this.guardias.add(guardia25);
+
+    var guardia26 = new Personajes.Guardia(this.game, 2817, 2198,this.player);
+    this.guardias.add(guardia26);
+
+    var guardia27 = new Personajes.Guardia(this.game, 2657, 2198,this.player);
+    this.guardias.add(guardia27);
+
+    var guardia28 = new Personajes.Guardia(this.game, 2023, 2520,this.player);
+    this.guardias.add(guardia28);
+
+    var guardia29 = new Personajes.Guardia(this.game, 3856, 2443,this.player);
+    this.guardias.add(guardia29);
+
+    var guardia30 = new Personajes.Guardia(this.game, 4363, 2443,this.player);
+    this.guardias.add(guardia30);
+
+    this._actualizaGuardias = true;
+    this.game.world.addChild(this.guardias);
+    console.log (this.guardias);
+}
 
 BuildMap.prototype.getColisionLayer = function(){
     return this.game.colisiones;
@@ -271,10 +353,11 @@ BuildMap.prototype.update_ = function(){
         enemy.updateEnemy_();
     });
 */
-
+    if (this._actualizaGuardias === true){
       this.guardias.forEach(function(guardia) {
         guardia.updateGuardia_();
-    });
+        });
+    }
 }
 
 BuildMap.prototype.destroy = function()

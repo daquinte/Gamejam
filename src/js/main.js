@@ -19,7 +19,7 @@ var BootScene = {
     this.game.load.image('logo', 'images/fondoMenu.png');//Imagen del logo
     this.game.load.audio('musicaMenu','sound/musicaMenu.mp3');
     //this.game.load.audio('buttonSound','sound/buttonSound.wav');
-
+     this.game.load.image('gameOver', 'images/gameOver.png');//Imagen del logo
   },
 
   create: function () {
