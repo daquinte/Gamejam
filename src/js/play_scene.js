@@ -17,9 +17,9 @@ var PlayScene =
         this.mapa = new Mapa(this.game);
      
         this.configure();
-        this.hora = 9;
+        this.hora = 21;
         this.minuto = 0;
-        this.dia = 1;
+        this.dia = 2;
         this.timePaused = false;
         this.game.numCabeza = 10;
 
@@ -111,6 +111,18 @@ var PlayScene =
         this.pala.visible = false;
 
 
+        //Llaves
+        this.llaveAlmacen= this.game.add.sprite(this.game.camera.x + 750,this.game.camera.y + 530, 
+                                        'llave');
+        this.llaveAlmacen.fixedToCamera = true;
+        this.llaveAlmacen.visible = false;
+        this.llaveAlmacen.scale.setTo(0.2,0.2);
+
+        this.llaveSalida= this.game.add.sprite(this.game.camera.x + 750,this.game.camera.y + 530, 
+                                        'llave2');
+        this.llaveSalida.fixedToCamera = true;
+        this.llaveSalida.visible = false;
+        this.llaveSalida.scale.setTo(0.2,0.2);
 
 
 
@@ -155,7 +167,27 @@ var PlayScene =
 
         this.buttonCelda.visible = false;
 
+          //Añadimos el botón
+        this.buttonEscape= this.game.add.button(0, 
+                                               0, 
+                                               'button', 
+                                               this.EscapeOnClick, 
+                                               this, 2, 0, 0);
+        this.buttonEscape.anchor.set(0.5);//Anclamos el botón
 
+        var textEscape = this.game.add.text(0, 0, "Intentar escapar");//Creamos el texto
+        textEscape.font = 'Poppins';//Elegimos la fuente
+        textEscape.anchor.set(0.5);//Anclamos el texto
+        //textCelda.fill = '#43d637';//PODEMOS PODER COLOR ASÍ
+
+        textEscape.fill = '#FFA500';
+        textEscape.stroke = '#FF0000';
+        textEscape.strokeThickness = 3;
+        textEscape.fontSize = 16;
+
+        this.buttonEscape.addChild(textEscape);//Metemos el texto en el botón
+
+        this.buttonEscape.visible = false;
     },
 
     aumentaTiempo: function ()
@@ -172,18 +204,24 @@ var PlayScene =
             else
                 this.texto.text = this.hora + " : " + this.minuto;
         
-        if(this.hora === 22)
+        if(this.hora === 22 && this.minuto === 0 )
             {
                 this.mapa.player.movement(0,0);
-                this.dia++;
                 this.timePaused = true;
-
+                this.textoDia.text = "Dia " + this.dia;
         
             }
-        if(this.dia===3)
+        else if(this.hora === 24 )
+        {
+            this.dia++;
+                this.textoDia.text = "Dia " + this.dia;
+
+            this.hora = 1;
+        }
+        if(this.dia===3 && this.hora > 8)
         {
             //GAMEOVER
-            var caca = 0;
+            this.game.state.start('gameOver');//Vamos al state de carga
         }
         
     }
@@ -209,7 +247,13 @@ var PlayScene =
                     this.game.agua.visible = true;
                  }
 
+            if(this.game.physics.arcade.collide(this.mapa.player, this.mapa.getPuertaPPal())&& this.game.input.keyboard.isDown(Phaser.Keyboard.E) &&this.game.estado.llaveAlmacen){
+                this.game.puertaPrincipalLayer.destroy();
+            }
 
+            if(this.game.physics.arcade.collide(this.mapa.player, this.mapa.getPuertaSalida())&& this.game.input.keyboard.isDown(Phaser.Keyboard.E) &&this.game.estado.llaveSalida){
+                this.game.state.start('final');//Vamos al state de carga
+            }
             //COLISION ENEMIGOS - TRIGGERS
             /*
             this.mapa.enemies.forEach(function(enemy) 
@@ -239,25 +283,15 @@ var PlayScene =
         }
         else
         {
-            this.ChooseNight();
+              this.buttonCelda.visible = true;
+                this.buttonCelda.x = this.mapa.player.x - 200;
+                this.buttonCelda.y = this.mapa.player.y - 100;
+
+                 this.buttonEscape.visible = true;
+                this.buttonEscape.x = this.mapa.player.x + 200;
+                this.buttonEscape.y = this.mapa.player.y - 100;
         }
-        /*
-        else if (this.pausa.goToMenu())
-        {
-            this.game.cache.destroy();
-            this.destroy();
-            this.game.state.start('boot');
-
-        }
-        */
-    },
-
-
-    ChooseNight: function()
-    {
-       this.buttonCelda.visible = true;
-       this.buttonCelda.x = this.mapa.player.x - 100;
-       this.buttonCelda.y = this.mapa.player.y - 100;
+        
     },
 
      //Al pulsar el botón
@@ -269,8 +303,23 @@ var PlayScene =
         this.hora = 9;
         this.texto.text = "Hora: " + this.hora;
         this.buttonCelda.visible = false;
+        this.buttonEscape.visible = false;
 
         this.dia++;
+        this.textoDia.text = "Dia " + this.dia;
+
+        this.timePaused = false;
+        //mover al jugador y reiniciar hora
+    } ,
+
+    EscapeOnClick: function(){
+        this.mapa.player.x = this.posIniX;
+        this.mapa.player.y = this.posIniY;
+        this.mapa.player.body.position = new Phaser.Point(this.posIniX, this.posIniY);
+        //this.mapa.player.body.position.y = ;
+        this.buttonCelda.visible = false;
+        this.buttonEscape.visible = false;
+
         this.timePaused = false;
         //mover al jugador y reiniciar hora
     } ,
@@ -301,17 +350,7 @@ var PlayScene =
         }
     },
 */
-/*
-  checkEnemyDeath: function(enemy){
-    if(enemy.isTouchingUp()){
-        //this.spiderSound.play();
-        enemy.destroy();
-        return true;
-    }
-    return false;
-  },
-  
-*/
+
     checkCollisionWithKey: function()
     {
         this.mapa.llaves.forEach(function(llave) 
@@ -332,6 +371,10 @@ var PlayScene =
                     this.textoCabeza.text = "x " + this.game.numCabeza;
                 else if(llave.key === 'raton')
                     this.raton.visible = true;
+                else if(llave.key === 'llave')
+                    this.llaveAlmacen.visible = true;
+                else if(llave.key === 'llave2')
+                    this.llaveSalida.visible = true;
 
                 llave.destroy();
             }
@@ -350,11 +393,13 @@ var PlayScene =
                 console.log(NPC);
                 if(NPC.key === 'monje' && this.game.estado.cebada && this.game.estado.agua && this.game.estado.lupulo)
                 {
+                     NPC.mensaje.push("Gracias chato, prepararé hidromiel también.");
                         //Parar enemigos para pasar al almacen
                 }
                 else if(NPC.key === 'palero'){
                     //Mostrar pala por pantalla
                     this.game.estado.pala = true;
+                    this.pala.visible = true;
                 }
                 else if(NPC.key === 'guardia' && this.game.estado.Lupulo === true){//Si hablo con el guardia y llevo el lupulo encima
                     this.game.estado.charlaGuardia = true;
@@ -380,7 +425,11 @@ var PlayScene =
                     NPC.destroy();
                     return;
                 }
+                else if(NPC.key === 'Romero'){
 
+                    this.game.lupulo.visible = true;
+                    
+                }
 
                 NPC.onCollision();
 
@@ -394,6 +443,7 @@ var PlayScene =
         }.bind(this));
             
     },
+
 
     /*
 
@@ -420,23 +470,7 @@ var PlayScene =
             
     },
 
-    goToNextNevel: function()
-    {
-        this.game.currentLevel++;
-        this.destroy();
-        this.game.state.start('preloader');
-        
-    },
-
-    //Configura la escena al inicio
-    configure: function()
-    {
-        //Color de fondo
-        this.game.stage.backgroundColor = '#a9f0ff';
-
-        //Start the Arcade Physics systems
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    },
+*/
     
     //Destruimos los recursos tilemap, tiles y logo.
     destroy: function()
@@ -447,7 +481,16 @@ var PlayScene =
         //this.mapa.destroy();//Destruye todo lo referente al mapa
 
         this.game.world.setBounds(0,0,800,600);
-    }
+    },
+      //Configura la escena al inicio
+    configure: function()
+    {
+        //Color de fondo
+        this.game.stage.backgroundColor = '#a9f0ff';
+
+        //Start the Arcade Physics systems
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    },
 
 };
 

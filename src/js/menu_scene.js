@@ -2,13 +2,12 @@
 var MenuScene = {
   //Al inicio del state
     create: function () {
-        /*
+        
         this.music = this.game.add.audio('musicaMenu');
-        this.sound = this.game.add.audio('buttonSound');
 
         this.music.play();
         this.music.loop = true;
-        */
+        
 
         //Añadimos sprite de logo
         var logo = this.game.add.sprite(this.game.world.centerX, 
@@ -70,7 +69,7 @@ var MenuScene = {
     //Al pulsar el botón
     actionOnClick: function(){
        // this.sound.play();
-        //this.music.destroy();
+        this.music.destroy();
         this.game.state.start('preloader');//Vamos al state de carga
     } ,
 

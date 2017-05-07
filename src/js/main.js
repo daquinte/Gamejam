@@ -17,7 +17,7 @@ var BootScene = {
     this.game.load.spritesheet('button', 'images/boton.png', 300,83,3);//Imagen del botón
     //this.game.load.spritesheet('buttonExit', 'images/boton_naranja.png', 190,45.5,3);//Imagen del botón
     this.game.load.image('logo', 'images/fondoMenu.png');//Imagen del logo
-    //this.game.load.audio('musicaMenu','sound/musicaMenu.wav');
+    this.game.load.audio('musicaMenu','sound/musicaMenu.mp3');
     //this.game.load.audio('buttonSound','sound/buttonSound.wav');
 
   },
@@ -52,9 +52,6 @@ var PreloaderScene = {
       this.game.load.tilemap('tilemap1', 'maps/mapa.json',null,Phaser.Tilemap.TILED_JSON);//Cargar el tilemap(hecho)
       
       //PERSONAJES
-      //this.game.load.image('player', 'images/gemBlue.png');//cargar sprites del tilemap
-
-
       this.game.load.spritesheet('player','images/Animacion.png',19,26);
       //this.game.load.spritesheet('enemy','images/enemy.png',77,53);
 
@@ -82,87 +79,15 @@ var PreloaderScene = {
       this.game.load.image('raton','images/ratoncillo.png');
       this.game.load.image('cuervos','images/cuervos.png');
       this.game.load.image('guardia','images/ratoncillo.png');
+      this.game.load.image('Romero','images/presoArquero.png');
+      this.game.load.image('pala','images/pala.png');
+      this.game.load.image('llave','images/key.png');
+      this.game.load.image('llave2','images/key.png');
   
 
-      //this.game.load.image('gemaRoja','images/gemRed.png');
-      //this.game.load.image('gemaAmarilla','images/gemYellow.png');
-      //this.game.load.image('gemaVerde','images/gemGreen.png');
-      
-      //this.game.load.spritesheet('Rocket','images/cohetes.png',110,246);
-
       //SONIDO
-      //this.game.load.audio('musica1','sound/musica1.wav');
-      //this.game.load.audio('jumpSound','sound/jumpSound.wav');
-      //this.game.load.audio('spiderSound','sound/spiderSound.wav');
-      //this.game.load.audio('rocketSound','sound/rocketSound.mp3');
-      //this.game.load.audio('gemSound','sound/gemSound.wav');
+      this.game.load.audio('musicaJuego','sound/musicaJuego1.wav');
 
-
-/*
-    else if(this.game.currentLevel === 2)
-    {
-      /////////////DESTRUIR CACHE/////////////
-      //MAPA
-      this.game.cache.removeTilemap('tilemap1');
-
-      //TILES
-      this.game.cache.removeImage('grassTiles');
-
-      //OBJETOS
-      this.game.cache.removeImage('Rocket');
-      this.game.cache.removeImage('gemaRoja');
-      this.game.cache.removeImage('gemaAmarilla');
-      this.game.cache.removeImage('gemaAzul');
-      this.game.cache.removeImage('gemaVerde');
-
-
-      this.game.cache.removeSound('musica1');
-      this.game.cache.removeSound('rocketSound');
-      this.game.cache.removeSound('gemSound');
-      ////////////////DESTRUIR CACHE/////////
-
-      //MAPA
-      this.game.load.tilemap('mapaFinal', 'maps/mapa2.json',null,Phaser.Tilemap.TILED_JSON);//Cargar el tilemap(hecho)
-      
-      //TILES
-      this.game.load.image('background', 'images/back.png');//cargar sprites del tilemap
-
-      this.game.load.image('flag', 'images/flagRed.png');//cargar sprites del tilemap
-
-      this.game.load.audio('gravitySound','sound/gravitySound.wav');
-      this.game.load.audio('musica2','sound/musica2.wav');
-    }
-    */
-
-/*
-    else if(this.game.currentLevel === 3)
-    {
-       /////////////DESTRUIR CACHE/////////////
-      //MAPA
-      this.game.cache.removeTilemap('mapaFinal');
-
-      //TILES
-      this.game.cache.removeImage('tiles');
-
-      //PERSONAJES
-      this.game.cache.removeImage('fox');
-      this.game.cache.removeImage('enemy');
-
-      //OBJETOS
-      this.game.cache.removeImage('flag');
-
-      this.game.cache.removeImage('gameOver');
-
-      this.game.load.image('fondoFinal', 'images/PantallaFinJuego.png');//Imagen del logo
-
-      this.game.cache.removeSound('musica2');
-      this.game.cache.removeSound('jumpSound');
-      this.game.cache.removeSound('gravitySound');
-      this.game.cache.removeSound('spiderSound');
-      ////////////////DESTRUIR CACHE/////////
-
-    }
-    */
 
     this.game.load.image('fondoFinal', 'images/gameOver.png');//Imagen del logo
 

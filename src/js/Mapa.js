@@ -27,35 +27,30 @@ function BuildMap(game)
     this.createObjNoCol();
     
 
-        var enemy = new Personajes.Enemy(this.game,210,750, this.player);
-
-        var guardia = new Personajes.Guardia(this.game, 400,400, this.player);
 
 
+    var guardia = new Personajes.Guardia(this.game, 400,400, this.player);
 
-        this.enemies = this.game.add.group();
-        this.enemies.add(enemy);
    
 
 
-        //this.game.world.addChild(this.enemies);
+
     this.createKeys();
 
     this.createNPCs();
 
-    this.game.world.addChild(this.enemies);
 
-        //----
-        this.guardias = this.game.add.group();
-        this.guardias.add(guardia);
+     
+    this.guardias = this.game.add.group();
+    this.guardias.add(guardia);
 
-        this.game.world.addChild(this.guardias);
-
+    this.game.world.addChild(this.guardias);
 
 
-       // this.musica = this.game.add.audio('musica1');
-       // this.musica.loop = true;
-       // this.musica.play();
+
+    this.musica = this.game.add.audio('musicaJuego');
+    this.musica.loop = true;
+    this.musica.play();
 
 
 
@@ -80,16 +75,16 @@ BuildMap.prototype.createTilemap = function(){
     this.game.objCol= this.game.map.createLayer('objetos colisionables');
     this.game.sueloPatio= this.game.map.createLayer('Suelo patio');
     this.game.aguaLayer = this.game.map.createLayer('Agua');
-    
-    this.game.pAlmacen= this.game.map.createLayer('PuertaAlmacen');
-    this.game.objetos= this.game.map.createLayer('Objetos');
+    this.game.puertaPrincipalLayer = this.game.map.createLayer('Puerta Principal');
+    this.game.salidaLayer = this.game.map.createLayer('Salida');
+
 
     //Colisiones con el plano de muerte y con el plano de muerte y con suelo.
     this.game.map.setCollisionBetween(1, 500, true, 'Paredes');
     this.game.map.setCollisionBetween(1, 500, true, 'objetos colisionables');
-    this.game.map.setCollisionBetween(1, 500, true, 'PuertaAlmacen');
     this.game.map.setCollisionBetween(1, 500, true, 'Agua');
-
+    this.game.map.setCollisionBetween(1, 500, true, 'Puerta Principal');
+    this.game.map.setCollisionBetween(1, 500, true, 'Salida');
 
     //Limites de colisiones
     this.game.world.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);//Límite del mundo
@@ -99,7 +94,7 @@ BuildMap.prototype.createObjNoCol = function(){
     this.game.objNoCol= this.game.map.createLayer('Objetos no colisionables');
 }
 BuildMap.prototype.createPlayer = function(){
-    this.player = new Personajes.Player(this.game,33*32,10*32);
+    this.player = new Personajes.Player(this.game,33*32,11*32);
             this.player.scale.setTo(1.3,1.5);
 
     this.game.world.addChild(this.player);
@@ -111,11 +106,8 @@ BuildMap.prototype.createKeys = function(){
     var callback = function(){
     };
         
-    //var llave = new Llave(this.game,500,300,'player',callback);
 
     this.llaves = this.game.add.group();
-
-    //this.llaves.add(llave);
 
 
     callback = function(){
@@ -139,9 +131,10 @@ BuildMap.prototype.createKeys = function(){
         this.game.estado.lupulo = true;
     };
 
-    var lupulo = new Llave(this.game,459,341,'Lupulo',callback);
+    this.game.lupulo = new Llave(this.game,133*32,17*32,'Lupulo',callback);
+    this.game.lupulo.visible = false;
 
-    this.llaves.add(lupulo);
+    this.llaves.add( this.game.lupulo);
 
     //CALAVERAS
     callback = function(){
@@ -188,6 +181,30 @@ BuildMap.prototype.createKeys = function(){
     var ratoncillo = new Llave(this.game,143*32,10*32 ,'raton',callback);
     this.llaves.add(ratoncillo);
 
+
+    callback = function(){
+        this.game.estado.llaveAlmacen = true;
+    };
+
+    var llaveAlmacen= new Llave(this.game,11*32,34*32 ,'llave',callback);
+    llaveAlmacen.scale.setTo(0.2,0.2);
+    this.llaves.add(llaveAlmacen);
+
+
+
+    callback = function(){
+        this.game.estado.llaveSalida = true;
+    };
+
+    var llaveSalida= new Llave(this.game,14*32,97*32 ,'llave2',callback);
+    llaveSalida.scale.setTo(0.2,0.2);
+    this.llaves.add(llaveSalida);
+
+
+  
+    
+
+
     this.game.world.addChild(this.llaves);
 
 
@@ -217,7 +234,9 @@ BuildMap.prototype.createNPCs = function(){
     var pablo = new NPC(this.game,92*32,58*32,'palero',texti);
     this.NPCs.add(pablo);
 
-
+    texti = ["Vendo lupulo, pero por ser tú, regalo de la cárcel"];
+    var romero = new NPC(this.game,133*32,21*32,'Romero',texti);
+    this.NPCs.add(romero);
 
     this.game.world.addChild(this.NPCs);
 };
@@ -232,7 +251,13 @@ BuildMap.prototype.getObjColisionLayer = function(){
 BuildMap.prototype.getAguaLayer = function(){
     return this.game.aguaLayer;
 };
+BuildMap.prototype.getPuertaPPal = function(){
+    return this.game.puertaPrincipalLayer;
+};
 
+BuildMap.prototype.getPuertaSalida= function(){
+    return this.game.salidaLayer;
+};
 
 
 
@@ -241,9 +266,11 @@ BuildMap.prototype.update_ = function(){
 
     this.player.update_();
     
+    /*
     this.enemies.forEach(function(enemy) {
         enemy.updateEnemy_();
     });
+*/
 
       this.guardias.forEach(function(guardia) {
         guardia.updateGuardia_();
