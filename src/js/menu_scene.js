@@ -52,17 +52,19 @@ var MenuScene = {
 
         textControl.fill = '#FFA500';
 
+
         this.textTutorial = this.game.add.text(30,420,"Controles teclado:"+'\n'+"-Puedes moverte con las flechas de dirección" + '\n' +
             "-Puedes interactuar con la tecla E"+ '\n' + "Controles mando:" + '\n' + "-Puedes moverte con los cursores de dirección"
              + '\n' + "-Puedes interactuar con el botón A");
+
+        this.buttonControl.addChild(textControl);//Metemos el texto en el botón
+
+      
         this.textTutorial.fill = '#FFA500';
 
         this.textTutorial.fontSize = 20;
 
         this.textTutorial.visible = false;
-
-         this.buttonControl.addChild(textControl);//Metemos el texto en el botón
-
     },
     
     //Al pulsar el botón

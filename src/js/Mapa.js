@@ -6,7 +6,8 @@ var Personajes = require('./Entidades.js');
 var ObjectPhysical = Objetos.ObjectPhysical;
 
 //var Rocket = Objetos.Rocket;
-//var Gem = Objetos.Gem;
+var Llave = Objetos.Llave;
+var NPC = Objetos.NPC;
 //var Flag = Objetos.Flag;
 
 
@@ -16,27 +17,15 @@ var Player= Personajes.Player;
 
 function BuildMap(game)
 {
-	this.game = game;
+    this.game = game;
 
-        //Cargamos el tilemap en el map
-        this.game.map =  game.add.tilemap('tilemap1');
-
-    	//Asignamos al tileset 'patrones' la imagen de sprites tiles
-        //patrones es lo de tiled y tiles, el nombre que tu le das en el main
-        this.game.map.addTilesetImage('tileset','tiles');
-
-    	//Creacion de las layers
-        this.game.suelo = game.map.createLayer('Suelo');
-    	this.game.colisiones = game.map.createLayer('Colisiones');
-
-    	//Colisiones con el plano de muerte y con el plano de muerte y con suelo.
-    	this.game.map.setCollisionBetween(1, 500, true, 'Colisiones');
-
-        //Limites de colisiones
-        this.game.world.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);//Límite del mundo
+    
+    this.createTilemap();
+    this.createPlayer();
+    this.createObjNoCol();
+    
         
-        this.player = new Personajes.Player(this.game,300,300);
-        this.game.world.addChild(this.player);
+    
 
       //  var enemy = new Personajes.Enemy(this.game,210,750);
 
@@ -46,16 +35,10 @@ function BuildMap(game)
    
 
         //this.game.world.addChild(this.enemies);
+    this.createKeys();
 
+    this.createNPCs();
 
-        //var gemBlue = new Gem(this.game,900,190,'gemaAzul');
-
-        
-        //this.gems = this.game.add.group();
-
-        //this.gems.add(gemBlue);
-
-        //this.game.world.addChild(this.gems);
 
        // this.musica = this.game.add.audio('musica1');
        // this.musica.loop = true;
@@ -67,10 +50,177 @@ function BuildMap(game)
 
 };
 
-BuildMap.prototype.getColisionLayer = function(){
-        return this.game.colisiones;
+BuildMap.prototype.createTilemap = function(){
+  //Cargamos el tilemap en el map
+    this.game.map =  this.game.add.tilemap('tilemap1');
+
+    //Asignamos al tileset 'patrones' la imagen de sprites tiles
+    //patrones es lo de tiled y tiles, el nombre que tu le das en el main
+    this.game.map.addTilesetImage('tileset','tiles');
+    this.game.map.addTilesetImage('tileset_añadidos','tiles');
+
+    //Creacion de las layers
+    this.game.suelo = this.game.map.createLayer('Suelo');
+    this.game.colisiones = this.game.map.createLayer('Paredes');
+    this.game.sillasDelante= this.game.map.createLayer('sillas por delante');
+    this.game.sillasDetras= this.game.map.createLayer('sillas por detras');
+    this.game.objCol= this.game.map.createLayer('objetos colisionables');
+    this.game.sueloPatio= this.game.map.createLayer('Suelo patio');
+    this.game.aguaLayer = this.game.map.createLayer('Agua');
+    
+    this.game.pAlmacen= this.game.map.createLayer('PuertaAlmacen');
+    this.game.objetos= this.game.map.createLayer('Objetos');
+
+    //Colisiones con el plano de muerte y con el plano de muerte y con suelo.
+    this.game.map.setCollisionBetween(1, 500, true, 'Paredes');
+    this.game.map.setCollisionBetween(1, 500, true, 'objetos colisionables');
+    this.game.map.setCollisionBetween(1, 500, true, 'PuertaAlmacen');
+    this.game.map.setCollisionBetween(1, 500, true, 'Agua');
+
+
+    //Limites de colisiones
+    this.game.world.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);//Límite del mundo
+};
+
+BuildMap.prototype.createObjNoCol = function(){
+    this.game.objNoCol= this.game.map.createLayer('Objetos no colisionables');
+}
+BuildMap.prototype.createPlayer = function(){
+    this.player = new Personajes.Player(this.game,33*32,10*32);
+            this.player.scale.setTo(1.3,1.5);
+
+    this.game.world.addChild(this.player);
 
 };
+
+BuildMap.prototype.createKeys = function(){
+    
+    var callback = function(){
+    };
+        
+    //var llave = new Llave(this.game,500,300,'player',callback);
+
+    this.llaves = this.game.add.group();
+
+    //this.llaves.add(llave);
+
+
+    callback = function(){
+        this.game.estado.cebada = true;
+    };
+
+    var cebada = new Llave(this.game,58*32,38*32,'Cebada',callback);
+
+    this.llaves.add(cebada);
+
+    callback = function(){
+        this.game.estado.agua = true;
+    };
+
+    this.game.agua = new Llave(this.game,78*32,17*32,'Agua',callback);
+    this.game.agua.visible = false;
+
+    this.llaves.add(this.game.agua);
+
+    callback = function(){
+        this.game.estado.lupulo = true;
+    };
+
+    var lupulo = new Llave(this.game,459,341,'Lupulo',callback);
+
+    this.llaves.add(lupulo);
+
+    //CALAVERAS
+    callback = function(){
+        this.game.numCabeza--;
+     };
+
+    var calavera = new Llave(this.game,25*32,23*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,56*32,38*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,74*32,38*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,9*32,38*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,145*32,10*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,146*32,33*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,71*32,54*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,20*32,41*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,107*32,13*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+     var calavera = new Llave(this.game,106*32,35*32 ,'cabeza',callback);
+    this.llaves.add(calavera);
+
+
+    callback = function(){
+        this.game.estado.raton = true;
+    };
+
+
+
+    var ratoncillo = new Llave(this.game,143*32,10*32 ,'raton',callback);
+    this.llaves.add(ratoncillo);
+
+    this.game.world.addChild(this.llaves);
+
+
+};
+
+BuildMap.prototype.createNPCs = function(){
+    var texti = ["Los demonios son una nimiedad comparado "+ '\n' + "con los torturadores, pero se les doma fácilmente. ","¿Quieres saber cómo? Tráeme cebada,"+ '\n' + " agua y lúpulo y haré maravillas.", "adios"];
+    var paco = new NPC(this.game,700,300,'monje', texti);
+   // var jerry= new Monje(this.game,100,600,'presoArquero', texti);
+    this.NPCs = this.game.add.group();
+
+    this.NPCs.add(paco);
+
+    texti = ["¿Qué te trae hasta mí? " + '\n' + "Mis estándares son demasiado altos para ti, NYEHEHEHEHEHEH!!!"];
+    var sury = new NPC(this.game,65 * 32, 49 * 32,'sury', texti);
+    sury.scale.setTo(0.2,0.2);
+
+    this.NPCs.add(sury);
+
+    texti = ["Uy, no tiene pinta de que quieran moverse." + '\n' + " Parecen bastante hambrientos. " + '\n' + "Me pregunto si puedo encontrar algo para ellos..."];
+    var cuervos = new NPC(this.game,57.5* 32, 29 * 32,'cuervos', texti);
+    cuervos.scale.setTo(0.2,0.2);
+
+    this.NPCs.add(cuervos);
+
+    texti = ["Hola soy Pablo el palero, y te regalo mi pala como mi gesto más sincero."]
+    var pablo = new NPC(this.game,92*32,58*32,'palero',texti);
+    this.NPCs.add(pablo);
+
+
+
+    this.game.world.addChild(this.NPCs);
+};
+
+
+BuildMap.prototype.getColisionLayer = function(){
+    return this.game.colisiones;
+};
+BuildMap.prototype.getObjColisionLayer = function(){
+    return this.game.objCol;
+};
+BuildMap.prototype.getAguaLayer = function(){
+    return this.game.aguaLayer;
+};
+
+
 
 
 
@@ -89,6 +239,8 @@ BuildMap.prototype.destroy = function()
     //ENTIDADES
     this.player.destroy();
     //this.enemies.destroy();
+    this.llaves.destroy();
+    this.NPCs.destroy();
 
     //LAYERS
 

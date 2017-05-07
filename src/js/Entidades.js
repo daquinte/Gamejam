@@ -121,15 +121,26 @@ function Player(game,posX,posY)
 {
     Entity.call(this,game,400,Direction.NONE,posX,posY,'player');
     this._playerState= PlayerState.STOP; //estado del player
-/*
+
 	//nombre de la animación, frames, framerate, isloop
-    this.animations.add('run',[3,4,5],10,true);
-    this.animations.add('stop',[0,1,2],7,true);
-    this.animations.add('jump',[6,7],5,false);
-    this.animations.add('fall',[8],5,false);
-    this.animations.add('unhand',[21,22,23],10,false);
-    this.animations.add('grab',[19,20],30,false);//Animación de agarre
-*/
+    //this.animations.add('run',[3,4,5],10,true);
+    this.animations.add('stopDown',[0],0,false);
+    this.animations.add('runDown',[1,2],5,true);
+
+    this.animations.add('stopUp',[3],0,false);
+    this.animations.add('runUp',[4,5],5,true);
+
+    this.animations.add('stopRight',[6],0,false);
+    this.animations.add('runRight',[7,6,8],5,true);
+
+    this.animations.add('stopLeft',[9],0,false);
+    this.animations.add('runLeft',[10,9,11],5,true);
+
+    //this.animations.add('jump',[6,7],5,false);
+    //this.animations.add('fall',[8],5,false);
+    //this.animations.add('unhand',[21,22,23],10,false);
+    //this.animations.add('grab',[19,20],30,false);//Animación de agarre
+
     //this.jumpSound = this.game.add.audio('jumpSound');
     //this.jumpSound.volume = 0.5;
 
@@ -139,14 +150,12 @@ function Player(game,posX,posY)
     //Velocidad del jugador
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
-
     this.game.camera.follow(this,Phaser.Camera.FOLLOW_LOCKON);//La cámara te sigue
 
 };
 
 Player.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
 Player.constructor = Player;
-
 
 Player.prototype.update_ = function()
 {
@@ -166,12 +175,43 @@ Player.prototype.update_ = function()
             if(movement !== Direction.NONE)
             {
                 this._playerState = PlayerState.RUN;
-                //this.animations.play('run');
+                
+
+                if (this._direction === Direction.DOWN){
+
+                    this.animations.play('runDown');
+                }
+
+
+                if (this._direction === Direction.UP)
+                this.animations.play('runUp');
+
+
+                if (this._direction === Direction.RIGHT)
+                this.animations.play('runRight');
+
+
+                if (this._direction === Direction.LEFT)
+                this.animations.play('runLeft');
             }
             else
             {
                 this._playerState = PlayerState.STOP;
-                //this.animations.play('stop');
+
+                if (this._direction === Direction.DOWN)
+                this.animations.play('stopDown');
+
+
+                if (this._direction === Direction.UP)
+                this.animations.play('stopUp');
+
+
+                if (this._direction === Direction.RIGHT)
+                this.animations.play('stopRight');
+
+
+                if (this._direction === Direction.LEFT)
+                this.animations.play('stopLeft');
             }
               
             break;
@@ -220,20 +260,28 @@ Player.prototype.GetMovement= function()
 {
     var movement = Direction.NONE
     //Move Right
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
         movement = Direction.RIGHT;
+        this._direction = Direction.RIGHT;
+    }
         
     //Move Left
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
         movement = Direction.LEFT;
+        this._direction = Direction.LEFT;
+    }
 
        //Move Up
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.UP)){
         movement = Direction.UP;
+        this._direction = Direction.UP;
+    }
 
        //Move Down
-    if(this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
         movement = Direction.DOWN;
+        this._direction = Direction.DOWN;
+    }
 
 
         
