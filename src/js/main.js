@@ -3,7 +3,7 @@
 //Require de las escenas
 var PlayScene = require('./play_scene.js');
 //var PlayScene2 = require('./play_scene2.js');
-//var GameOverScene = require('./gameover_scene.js');
+var GameOverScene = require('./gameover_scene.js');
 var MenuScene = require('./menu_scene.js');
 //var FinalScene = require('./final_scene.js');
 
@@ -46,7 +46,7 @@ var PreloaderScene = {
 
       this.game.cache.removeImage('logo');
 
-      //this.game.load.image('gameOver', 'images/cosmos.jpg');//Imagen del logo
+      this.game.load.image('gameOver', 'images/gameOver.png');//Imagen del logo
 
       //MAPA
       this.game.load.tilemap('tilemap1', 'maps/mapa.json',null,Phaser.Tilemap.TILED_JSON);//Cargar el tilemap(hecho)
@@ -143,6 +143,8 @@ var PreloaderScene = {
     }
     */
 
+    this.game.load.image('fondoFinal', 'images/gameOver.png');//Imagen del logo
+
     this.load.onLoadComplete.add(this.loadComplete, this);//Nos suscribimos al evento de cuando finaliza la carga
   },
 
@@ -196,7 +198,7 @@ function init()
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', PlayScene);
   //game.state.add('play2', PlayScene2);
- // game.state.add('gameOver', GameOverScene);
+  game.state.add('gameOver', GameOverScene);
   //game.state.add('final', FinalScene);
 
 
