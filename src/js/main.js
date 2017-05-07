@@ -59,6 +59,10 @@ var PreloaderScene = {
 
       this.game.load.image('guardia','images/guardia.png');
 
+      this.game.load.image('conoLuz','images/luz.png');
+
+      this.game.load.image('invisibilidad','images/invisibilidad.png');
+
       //TILES
       this.game.load.image('tiles', 'images/tileset.png');//cargar sprites del tilemap
 

@@ -4,6 +4,7 @@
 //mover el player.
 var PlayerState = {'RUN':0,'STOP':1, 'HIDE':2};
 var Direction = {'LEFT':0, 'RIGHT':1, 'UP':2, 'DOWN':3, 'NONE':4}
+var estadosGuardia = {'SOSEGADO': 0, 'ALERTA' :1}
 
 //var nextJump = 0;//Contador para el próximo salto
 
@@ -51,12 +52,14 @@ Entity.prototype.movement= function(x, y)
 Entity.prototype.isTouching= function()
 {
     return (this.body.touching.right || this.body.blocked.right || this.body.touching.left || this.body.blocked.left || this.body.blocked.up || this.body.touching.up || this.body.blocked.down || this.body.touching.down   );
-}
+};
 
 /*Entity.prototype.getAnimations = function(){
     return this.animations;
 };*/
  ////////////ENTITY////////////////////////
+
+///////////////URSS///////////////////////
 
 
 ///////////////PLAYER///////////////////////
@@ -85,6 +88,10 @@ function Player(game,posX,posY)
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
 
+    this.posCamaX = posX;
+    this.posCamaY = this.posY;
+
+    this.invisibilidad = false;
     this.game.camera.follow(this,Phaser.Camera.FOLLOW_LOCKON);//La cámara te sigue
 
 };
@@ -97,8 +104,11 @@ Player.prototype.update_ = function()
 {
 	var moveDirection = new Phaser.Point(0, 0);
     var movement = this.GetMovement();
-  
-
+    
+    //
+    if(this.game.physics.arcade.collide(this.Urss, this)){
+        invisibilidad= true;
+    }
     //transitions
     switch(this._playerState)
     {
@@ -205,7 +215,23 @@ Player.prototype.getPosY = function (){
    return this.body.y;
 };
 
+Player.prototype.getPosCamaX = function (){
+    return this.posCamaX;
+};
+
+
+Player.prototype.getPosCamaY = function (){
+   return this.PosCamaY;
+};
+
+Player.prototype.setPosPj = function(ALaCamaX, ALaCamaY) {
+    this.body.x = ALaCamaX;
+    this.body.y = ALaCamaY;
+
+}
+
 ///////////////PLAYER///////////////////////
+
 
 /////////////////ENEMY////////////////////
 
@@ -263,99 +289,110 @@ Enemy.prototype.isTouchingUp = function()
 
 //var graphics;
        
+/*function circuloLuz (game, diametro){
+    //Entity.call(this,game,200,Direction.NONE,posIniX, posIniY,'luz'); 
 
+    this.diametro = diametro;
+    this.radio = this.diametro/2;
+
+    Phaser.Sprite.call(this,game,posX,posY,name);
+    this.circuloGuardia = Phaser.Circle(posIniX, posIniY, this.diametro)
+}
+
+circuloLuz.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
+circuloLuz.constructor = circuloLuz;
+*/
 /////////////////POLY GUARDIA////////////////////
 /////////////////GUARDIA////////////////////
 function Guardia(game,posCreacionX,posCreacionY,player){
 
-    Entity.call(this,game,200,Direction.UP,posCreacionX, posCreacionY,'guardia'); 
+    Entity.call(this,game,200,Direction.NONE,posCreacionX, posCreacionY,'guardia'); 
    // this.animations.add('walk',[1,2],10,true);
     //this.animations.add('dead',[3],1,false);
     //this.animations.play('walk');
     this.player = player;
+    this._estActGuardia = estadosGuardia.SOSEGADO;
 
-    
+  
 };
 
 Guardia.prototype = Object.create(Entity.prototype);//Ajustamos el prototipo
 Guardia.constructor = Guardia;
 
-Guardia.prototype.updateEnemy_ = function()        //Se llama igual para evitar movidas? 
+Guardia.prototype.updateGuardia_ = function()        //Se llama igual para evitar movidas? 
 {
 
-    this.poly = new Phaser.Polygon([ new Phaser.Point (this.body.x,this.body.y), new Phaser.Point (this.body.x*Math.cos(60), this.body.y *Math.sin(60)), 
-        new Phaser.Point (this.body.x*Math.cos(-60),this.body.y*Math.sin(-60))]);
-
-
-    this.graphics = this.game.add.graphics(this.body.x, this.body.y);
-
-    this.graphics.beginFill(0xFF33ff);
-    this.graphics.drawPolygon(this.poly.points);
-    this.graphics.endFill();
-
-    this.addChild(this.graphics);
-
-   /* var rnd = Math.floor((Math.random() * 4) + 1); 
-
-    switch (rnd){
-
-        case 0:
-          this._direction = Direction.RIGHT;
-        break;
-
-            case 1:
-          this._direction = Direction.LEFT;
-        break;
-
-            case 2:
-          this._direction = Direction.UP;
-        break;
-
-            case 3:
-          this._direction = Direction.DOWN;
-        break;
+    if (this.game.physics.arcade.collide(this.player, this)){
+        this.player.setPosPj(this.player.getPosCamaX(), 300);
     }
-    */
-            this.graphics.clear();
 
-            if (this.poly.contains(this.player.getPosX(), this.player.getPosY())){
+    //Hallamos la distancia
+    this.distance = Math.sqrt(  ((this.player.getPosX()-this.body.x) *(this.player.getPosX()-this.body.x)) 
+     +   ((this.player.getPosY()-this.body.y)*(this.player.getPosY()-this.body.y)));
 
-                    console.log(this.player.getPosX(), this.player.getPosY());
-                  this.graphics.beginFill(0xFF3300);
-                console.log ("Hola estás dentro de mi, me estás oprimiendo");
+    //Comprobamos si el jugador está en el area del guardia
+    if(this.distance <= 100 && this.distance >= 1) {
+        this._estActGuardia = estadosGuardia.ALERTA;
+    }
+
+    else this._estActGuardia = estadosGuardia.SOSEGADO; 
+
+    //En función del nuevo estado, vamos a añadir o no un parámetro a la velocidad
+    var adder;
+    if (this._estActGuardia === estadosGuardia.SOSEGADO) {
+        this.adder = 1;
+
+    }
+    else if (this._estActGuardia === estadosGuardia.ALERTA){
+        this._direction = Direction.UP;
+        this.adder = 2;
+    }
+
+
+  
+
+    //Switch entre los dos tipos de movimiento del guardia
+
+    switch(this._estActGuardia){
+
+
+         case estadosGuardia.SOSEGADO:
+
+         var moveDirection = new Phaser.Point(0, 0);
+
+            if(this._direction === Direction.RIGHT){
+            moveDirection.x = (this._speed*this.adder);
+            //this.changeDirectionLeft();
+            }
+            else if (this._direction === Direction.LEFT){
+                moveDirection.x = -(this._speed*this.adder);
+                //this.changeDirectionRight();
             }
 
-            else{
-                this.graphics.beginFill(0xFF33ff);
-             console.log ("Cuack");
-         }
+            else if (this._direction === Direction.UP){
+                moveDirection.y = -(this._speed*this.adder);
 
-            this.graphics.drawPolygon(this.poly.points);
-            this.graphics.endFill();
+                //this.changeDirectionUp();
+            }
+            else if (this._direction === Direction.DOWN){
+                moveDirection.y = (this._speed*this.adder);
+                //this.changeDirectionDown();
+            }
+        break;
 
-  var moveDirection = new Phaser.Point(0, 0);
 
-    if(this._direction === Direction.RIGHT){
-        moveDirection.x = this._speed;
-        //this.changeDirectionLeft();
-    }
-    else if (this._direction === Direction.LEFT){
-        moveDirection.x = -this._speed;
-        //this.changeDirectionRight();
-    }
+        case estadosGuardia.ALERTA:
+             var moveDirection = new Phaser.Point(this.player.getPosX(), this.player.getPosY());
+    
+            if (this.body.x != moveDirection.x && this.body.y != moveDirection.y ) {
+                this.game.physics.arcade.moveToXY(this,moveDirection.x,moveDirection.y,60,0);
+            }
+        break;
+    
 
-    else if (this._direction === Direction.UP){
-        moveDirection.y = -this._speed;
-        //this.changeDirectionUp();
-    }
-    else if (this._direction === Direction.DOWN){
-        moveDirection.y = this._speed;
-        //this.changeDirectionDown();
-    }
     //this.changeDirectionGuardia();
-    //this.movement(moveDirection.x, moveDirection.y);
-
-
+    this.movement(moveDirection.x, moveDirection.y);
+    }
    // console.log("bing bing BONG");
 
 };

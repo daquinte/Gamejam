@@ -36,12 +36,15 @@ function BuildMap(game)
 
         //Limites de colisiones
         this.game.world.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);//Límite del mundo
-        
+
         this.player = new Personajes.Player(this.game,300,300);
         this.game.world.addChild(this.player);
 
         var enemy = new Personajes.Enemy(this.game,210,750, this.player);
+
         var guardia = new Personajes.Guardia(this.game, 400,400, this.player);
+
+
 
         this.enemies = this.game.add.group();
         this.enemies.add(enemy);
@@ -90,7 +93,7 @@ BuildMap.prototype.update_ = function(){
     });
 
       this.guardias.forEach(function(guardia) {
-        guardia.updateEnemy_();
+        guardia.updateGuardia_();
     });
 }
 

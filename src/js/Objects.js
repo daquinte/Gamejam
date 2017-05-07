@@ -1,5 +1,6 @@
 'use strict';
 
+
 function PhysicalObject(game,posX,posY,nombreImagen)
 {
     this.game = game;
