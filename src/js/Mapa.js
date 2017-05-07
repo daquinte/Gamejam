@@ -26,6 +26,8 @@ function BuildMap(game)
     this.createPlayer();
     this.createObjNoCol();
     
+
+    
     this.createKeys();
 
     this.createNPCs();
@@ -168,9 +170,10 @@ BuildMap.prototype.createKeys = function(){
         this.game.estado.llaveAlmacen = true;
     };
 
-    var llaveAlmacen= new Llave(this.game,11*32,34*32 ,'llave',callback);
-    llaveAlmacen.scale.setTo(0.2,0.2);
-    this.llaves.add(llaveAlmacen);
+   this.llaveAlmacen= new Llave(this.game,11*32,34*32 ,'llave',callback);
+    this.llaveAlmacen.scale.setTo(0.2,0.2);
+    this.llaves.add(this.llaveAlmacen);
+    this.llaveAlmacen.visible = false;
 
 
 

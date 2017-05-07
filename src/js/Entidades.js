@@ -118,10 +118,7 @@ Player.prototype.update_ = function()
 	var moveDirection = new Phaser.Point(0, 0);
     var movement = this.GetMovement();
     
-    //
-    if(this.game.physics.arcade.collide(this.Urss, this)){
-        invisibilidad= true;
-    }
+  
     //transitions
     switch(this._playerState)
     {

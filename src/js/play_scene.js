@@ -247,7 +247,8 @@ var PlayScene =
                     this.game.agua.visible = true;
                  }
 
-            if(this.game.physics.arcade.collide(this.mapa.player, this.mapa.getPuertaPPal())&& this.game.input.keyboard.isDown(Phaser.Keyboard.E) &&this.game.estado.llaveAlmacen){
+            if(this.game.physics.arcade.collide(this.mapa.player, this.mapa.getPuertaPPal())&& this.game.input.keyboard.isDown(Phaser.Keyboard.E) &&this.game.estado.llaveAlmacen 
+                this.hora <22 && this.hora < 6){
                 this.game.puertaPrincipalLayer.destroy();
             }
 
@@ -261,6 +262,7 @@ var PlayScene =
                 this.game.physics.arcade.collide(enemy, this.mapa.getTriggerLayer());
             }.bind(this));
 */          
+
         
 
             this.mapa.update_();
@@ -396,6 +398,7 @@ var PlayScene =
                 if(NPC.key === 'monje' && this.game.estado.cebada && this.game.estado.agua && this.game.estado.lupulo)
                 {
                      NPC.mensaje.push("Gracias chato, prepararé hidromiel también.");
+                     this.mapa.llaveAlmacen.visible = true;
                         //Parar enemigos para pasar al almacen
                 }
                 else if(NPC.key === 'palero'){
@@ -438,7 +441,7 @@ var PlayScene =
 
 
                 //NPC.destroy();
-                nextConver = this.game.time.now + 3000;
+                nextConver = this.game.time.now + 5000;
 
             }
 

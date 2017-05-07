@@ -74,7 +74,7 @@ NPC.prototype.onCollision = function(){
         this.mesIndex = 0;
 
     var timer = this.game.time.create(false);
-    timer.add(2000, this.destroyText, this);
+    timer.add(5000, this.destroyText, this);
     timer.start();
         //this.textTutorial.visible = false;
       //this.mensaje[mesIndex].
