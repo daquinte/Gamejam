@@ -3,7 +3,9 @@
 //var Pausa = require('./Pausa.js');
 var Mapa = require('./Mapa.js');
 
+
 var nextConver = 0
+
 
 //Scena de juego.
 var PlayScene = 
@@ -117,6 +119,7 @@ var PlayScene =
 
 
 
+         
         //Creamos la pausa
        // this.pausa = new Pausa(this.game,this.mapa.player.getAnimations(),this.mapa.enemies , this.mapa.musica);
 
@@ -213,7 +216,8 @@ var PlayScene =
             {
                 this.game.physics.arcade.collide(enemy, this.mapa.getTriggerLayer());
             }.bind(this));
-*/
+*/          
+        
 
             this.mapa.update_();
 
@@ -247,6 +251,7 @@ var PlayScene =
         }
         */
     },
+
 
     ChooseNight: function()
     {
@@ -295,17 +300,18 @@ var PlayScene =
             this.destroy();
         }
     },
-
+*/
+/*
   checkEnemyDeath: function(enemy){
     if(enemy.isTouchingUp()){
-        this.spiderSound.play();
+        //this.spiderSound.play();
         enemy.destroy();
         return true;
     }
     return false;
   },
-  */
-
+  
+*/
     checkCollisionWithKey: function()
     {
         this.mapa.llaves.forEach(function(llave) 
@@ -420,7 +426,7 @@ var PlayScene =
         this.destroy();
         this.game.state.start('preloader');
         
-    },*/
+    },
 
     //Configura la escena al inicio
     configure: function()

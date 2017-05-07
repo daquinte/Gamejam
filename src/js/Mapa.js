@@ -13,31 +13,44 @@ var NPC = Objetos.NPC;
 
 var Entity= Personajes.Entity;
 var Player= Personajes.Player;
-//var Enemy= Personajes.Enemy;
+var Enemy= Personajes.Enemy;
+var Guardia= Personajes.Guardia;
 
 function BuildMap(game)
 {
     this.game = game;
+
 
     
     this.createTilemap();
     this.createPlayer();
     this.createObjNoCol();
     
-        
-    
 
-      //  var enemy = new Personajes.Enemy(this.game,210,750);
+        var enemy = new Personajes.Enemy(this.game,210,750, this.player);
+
+        var guardia = new Personajes.Guardia(this.game, 400,400, this.player);
 
 
-       // this.enemies = this.game.add.group();
-     //this.enemies.add(enemy);
+
+        this.enemies = this.game.add.group();
+        this.enemies.add(enemy);
    
+
 
         //this.game.world.addChild(this.enemies);
     this.createKeys();
 
     this.createNPCs();
+
+    this.game.world.addChild(this.enemies);
+
+        //----
+        this.guardias = this.game.add.group();
+        this.guardias.add(guardia);
+
+        this.game.world.addChild(this.guardias);
+
 
 
        // this.musica = this.game.add.audio('musica1');
@@ -227,11 +240,14 @@ BuildMap.prototype.getAguaLayer = function(){
 BuildMap.prototype.update_ = function(){
 
     this.player.update_();
-    /*
+    
     this.enemies.forEach(function(enemy) {
         enemy.updateEnemy_();
     });
-*/
+
+      this.guardias.forEach(function(guardia) {
+        guardia.updateGuardia_();
+    });
 }
 
 BuildMap.prototype.destroy = function()

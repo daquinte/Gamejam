@@ -5,8 +5,15 @@ Para instalar ejecutar desde la consola:
 
 $ npm install
 
+dentro de la carpeta donde esté el repositorio.
+Recuerda:
+	dir -> Abre todas las carpetas que contenga el lugar donde estás.
+	cd [carpeta] -> Avanza a la carpeta [carpeta]
+
 Ejecución
 
 Desde dentro de la carpeta del enunciado ejecutar:
 
 $ node ./node_modules/gulp/bin/gulp run
+
+(Sin el dollar $$$$ :3)
